@@ -49,9 +49,9 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .time{display:flex; align-items:center; gap:10px; flex:1 1 300px; min-width:0; background:var(--disk); border:1px solid var(--ink-soft); border-radius:3px; padding:4px 10px 4px 4px}
 .time button{border:0; width:32px; height:28px; padding:0; color:var(--play); font-size:13px}
 #year{flex:1; min-width:80px; -webkit-appearance:none; appearance:none; height:22px; margin:0; background:transparent; cursor:pointer; --p:100%}
-#year::-webkit-slider-runnable-track{height:4px; background:linear-gradient(to right, var(--track) var(--p), color-mix(in srgb, var(--track) 22%, var(--disk)) var(--p))}
+#year::-webkit-slider-runnable-track{height:4px; background:linear-gradient(to right, var(--track) var(--p), #D9E5E0 var(--p)); background:linear-gradient(to right, var(--track) var(--p), color-mix(in srgb, var(--track) 22%, var(--disk)) var(--p))}
 #year::-webkit-slider-thumb{-webkit-appearance:none; appearance:none; width:15px; height:15px; margin-top:-5.5px; border:0; border-radius:50%; background:var(--playhead)}
-#year::-moz-range-track{height:4px; background:color-mix(in srgb, var(--track) 22%, var(--disk))}
+#year::-moz-range-track{height:4px; background:#D9E5E0; background:color-mix(in srgb, var(--track) 22%, var(--disk))}
 #year::-moz-range-progress{height:4px; background:var(--track)}
 #year::-moz-range-thumb{width:15px; height:15px; border:0; border-radius:50%; background:var(--playhead)}
 #yearOut{font-family:var(--f-mono); font-size:13px; font-variant-numeric:tabular-nums; min-width:8.5ch; text-align:right}
@@ -119,7 +119,8 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .node.sel .halo{opacity:.7}
 .node.beyond .dot, .node.beyond .halo{display:none}
 .blob-h{fill:url(#xhatchB); pointer-events:none}
-.blob{fill:var(--bg); stroke:color-mix(in srgb, var(--hatch) 70%, #6E6E68); stroke-width:1.1; stroke-dasharray:3 3; vector-effect:non-scaling-stroke}
+/* plain fallbacks first, for browsers without color-mix */
+.blob{fill:var(--bg); stroke:#A8A8A2; stroke:color-mix(in srgb, var(--hatch) 70%, #6E6E68); stroke-width:1.1; stroke-dasharray:3 3; vector-effect:non-scaling-stroke}
 .node.beyond:hover .blob, .node.beyond.sel .blob{stroke-width:2}
 .node.beyond.lit .blob{stroke:var(--red); stroke-width:1.8}
 .node.beyond.out-n .blob{stroke:var(--out)}
@@ -188,11 +189,23 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .made-cut[open] > p{margin-top:8px}
 .read-map summary, .made-cut summary, .credits summary{cursor:pointer; list-style:none; display:flex; align-items:center; gap:8px; font-family:var(--f-mono); font-size:10.5px; font-weight:500; letter-spacing:.09em; text-transform:uppercase; color:var(--t-meta)}
 .read-map summary::-webkit-details-marker, .made-cut summary::-webkit-details-marker, .credits summary::-webkit-details-marker{display:none}
-.read-map summary::after, .made-cut summary::after, .credits summary::after{content:"+"; margin-left:auto; font-size:14px; letter-spacing:0}
-.read-map[open] summary::after, .made-cut[open] summary::after, .credits[open] summary::after{content:"\2212"}
+.all-ideas summary::after, .read-map summary::after, .made-cut summary::after, .credits summary::after{content:"+"; margin-left:auto; font-size:14px; letter-spacing:0}
+.all-ideas[open] summary::after, .read-map[open] summary::after, .made-cut[open] summary::after, .credits[open] summary::after{content:"\2212"}
 .read-map summary:focus-visible, .made-cut summary:focus-visible, .credits summary:focus-visible{outline:2px solid var(--red); outline-offset:2px}
 .made-cut p{margin:0; font-size:13px; line-height:1.5; color:var(--t-body)}
 .credits{margin-top:6px}
+.all-ideas{border-top:1px solid var(--rule); padding-top:16px; margin-top:4px}
+.all-ideas .fine{margin:8px 0 0; font-size:12.5px; color:var(--t-faint)}
+.all-ideas summary{cursor:pointer; list-style:none; display:flex; align-items:center; gap:8px; font-family:var(--f-mono); font-size:10.5px; font-weight:500; letter-spacing:.09em; text-transform:uppercase; color:var(--t-meta)}
+.all-ideas summary::-webkit-details-marker{display:none}
+.all-ideas summary:focus-visible{outline:2px solid var(--red); outline-offset:2px}
+.idea-list{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column}
+.idea-list button{all:unset; box-sizing:border-box; width:100%; cursor:pointer; display:grid; grid-template-columns:76px minmax(0,1fr); column-gap:10px; padding:7px 0; border-bottom:1px solid var(--ink-tint)}
+.idea-list button:hover .il-t{text-decoration:underline; text-underline-offset:3px}
+.idea-list button:focus-visible{outline:2px solid var(--red); outline-offset:2px}
+.il-when{grid-row:1 / span 2; font-family:var(--f-mono); font-size:11px; color:var(--t-meta); padding-top:2px}
+.il-t{font-family:var(--f-display); font-size:15px; color:var(--t-head)}
+.il-f{font-size:12px; color:var(--t-faint)}
 .credits p{margin:8px 0 6px; font-size:12px; line-height:1.5; color:var(--t-meta)}
 .credits ul{margin:0; padding-left:16px; display:flex; flex-direction:column; gap:3px; font-size:11.5px; line-height:1.45; color:var(--t-meta)}
 .fine{font-size:12px; line-height:1.5; color:var(--t-meta); margin:0}
@@ -325,7 +338,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 
 <div class="app">
   <section class="stage" id="stage" aria-label="Knowledge map">
-    <svg id="map" role="img" aria-label="A circle of human knowledge. Radius is time; wedges are fields. Red lines connect the ideas that converge on special relativity in 1905, pushing the edge of the circle outward.">
+    <svg id="map" role="group" aria-label="A circle of human knowledge. Radius is time; wedges are fields. Red lines connect the ideas that converge on special relativity in 1905, pushing the edge of the circle outward.">
       <defs>
         <pattern id="xhatchB" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
           <line class="xh" x1="0" y1="0" x2="0" y2="6" stroke-width=".5"/><line class="xh" x1="0" y1="0" x2="6" y2="0" stroke-width=".5"/>
@@ -338,7 +351,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
         </pattern>
       </defs>
       <radialGradient id="possibleGrad" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1520">
-        <stop offset="0" stop-color="var(--bump)" stop-opacity="0"/><stop offset="0.657" stop-color="var(--bump)" stop-opacity="0"/><stop offset="0.658" stop-color="var(--bump)" stop-opacity="0.950"/><stop offset="0.692" stop-color="var(--bump)" stop-opacity="0.828"/><stop offset="0.726" stop-color="var(--bump)" stop-opacity="0.711"/><stop offset="0.761" stop-color="var(--bump)" stop-opacity="0.598"/><stop offset="0.795" stop-color="var(--bump)" stop-opacity="0.489"/><stop offset="0.829" stop-color="var(--bump)" stop-opacity="0.386"/><stop offset="0.863" stop-color="var(--bump)" stop-opacity="0.289"/><stop offset="0.897" stop-color="var(--bump)" stop-opacity="0.199"/><stop offset="0.932" stop-color="var(--bump)" stop-opacity="0.117"/><stop offset="0.966" stop-color="var(--bump)" stop-opacity="0.048"/><stop offset="1.000" stop-color="var(--bump)" stop-opacity="0.000"/>
+        <stop offset="0" stop-opacity="0" style="stop-color:var(--bump)"/><stop offset="0.657" stop-opacity="0" style="stop-color:var(--bump)"/><stop offset="0.658" stop-opacity="0.950" style="stop-color:var(--bump)"/><stop offset="0.692" stop-opacity="0.828" style="stop-color:var(--bump)"/><stop offset="0.726" stop-opacity="0.711" style="stop-color:var(--bump)"/><stop offset="0.761" stop-opacity="0.598" style="stop-color:var(--bump)"/><stop offset="0.795" stop-opacity="0.489" style="stop-color:var(--bump)"/><stop offset="0.829" stop-opacity="0.386" style="stop-color:var(--bump)"/><stop offset="0.863" stop-opacity="0.289" style="stop-color:var(--bump)"/><stop offset="0.897" stop-opacity="0.199" style="stop-color:var(--bump)"/><stop offset="0.932" stop-opacity="0.117" style="stop-color:var(--bump)"/><stop offset="0.966" stop-opacity="0.048" style="stop-color:var(--bump)"/><stop offset="1.000" stop-opacity="0.000" style="stop-color:var(--bump)"/>
       </radialGradient>
       <path id="rimFill"/>
       <g id="gFields"></g>
@@ -417,11 +430,16 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
       <div class="legend">
         <details class="read-map">
           <summary>Reading the map</summary>
-        <div class="lg"><svg viewBox="0 0 34 18"><line x1="7" y1="9" x2="32" y2="9" stroke="var(--red)" stroke-width="2"/><path d="M8 5 L2 9 L8 13 Z" fill="var(--red)"/></svg><span><b>Built on.</b> The earlier ideas the selected one draws from.</span></div>
-        <div class="lg"><svg viewBox="0 0 34 18"><line x1="2" y1="9" x2="27" y2="9" stroke="var(--out)" stroke-width="2"/><path d="M26 5 L32 9 L26 13 Z" fill="var(--out)"/></svg><span><b>Led to.</b> What the selected idea made possible.</span></div>
-        <div class="lg"><svg viewBox="0 0 34 18"><line x1="2" y1="9" x2="32" y2="9" stroke="var(--t-meta)" stroke-width="1.5" stroke-dasharray="4 3"/></svg><span><b>Dashed.</b> A link historians still debate.</span></div>
-        <div class="lg"><svg viewBox="0 0 34 18"><circle cx="12" cy="11" r="3.2" fill="var(--disk)" stroke="var(--link)" stroke-width="1.2"/><text x="17" y="7" font-size="7" fill="var(--t-meta)" font-family="monospace">7</text></svg><span><b>Date order:</b> each idea is numbered from oldest (1) to newest (<span class="nNum">45</span>). Switch the numbers off with the Date order button below the map.</span></div>
-        <div class="lg"><svg viewBox="0 0 34 24" style="height:24px"><defs><linearGradient id="lgPos" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="var(--bump)" stop-opacity=".95"/><stop offset="1" stop-color="var(--bump)" stop-opacity="0"/></linearGradient><pattern id="lgX" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="3" stroke="var(--hatch)" stroke-width=".6"/><line x1="0" y1="0" x2="3" y2="0" stroke="var(--hatch)" stroke-width=".6"/></pattern></defs><rect x="1" y="13" width="32" height="7" fill="url(#lgPos)"/><line x1="1" y1="20" x2="33" y2="20" stroke="var(--ink)" stroke-width="1.2"/><circle cx="17" cy="6.5" r="5.5" fill="var(--bg)"/><circle cx="17" cy="6.5" r="5.5" fill="url(#lgX)" stroke="color-mix(in srgb, var(--hatch) 70%, #6E6E68)" stroke-width=".8" stroke-dasharray="1.8 1.3"/></svg><span><b>Unknown domains:</b> the soft band beyond the rim. Ideas within reach of what is known, found by combining existing ones.</span></div>
+        <div class="lg"><svg viewBox="0 0 34 18"><line x1="7" y1="9" x2="32" y2="9" stroke-width="2" style="stroke:var(--red)"/><path d="M8 5 L2 9 L8 13 Z" style="fill:var(--red)"/></svg><span><b>Built on.</b> The earlier ideas the selected one draws from.</span></div>
+        <div class="lg"><svg viewBox="0 0 34 18"><line x1="2" y1="9" x2="27" y2="9" stroke-width="2" style="stroke:var(--out)"/><path d="M26 5 L32 9 L26 13 Z" style="fill:var(--out)"/></svg><span><b>Led to.</b> What the selected idea made possible.</span></div>
+        <div class="lg"><svg viewBox="0 0 34 18"><line x1="2" y1="9" x2="32" y2="9" stroke-width="1.5" stroke-dasharray="4 3" style="stroke:var(--t-meta)"/></svg><span><b>Dashed.</b> A link historians still debate.</span></div>
+        <div class="lg"><svg viewBox="0 0 34 18"><circle cx="12" cy="11" r="3.2" stroke-width="1.2" style="fill:var(--disk); stroke:var(--link)"/><text x="17" y="7" font-size="7" font-family="monospace" style="fill:var(--t-meta)">7</text></svg><span><b>Date order:</b> each idea is numbered from oldest (1) to newest (<span class="nNum">45</span>). Switch the numbers off with the Date order button below the map.</span></div>
+        <div class="lg"><svg viewBox="0 0 34 24" style="height:24px"><defs><linearGradient id="lgPos" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-opacity=".95" style="stop-color:var(--bump)"/><stop offset="1" stop-opacity="0" style="stop-color:var(--bump)"/></linearGradient><pattern id="lgX" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="3" stroke-width=".6" style="stroke:var(--hatch)"/><line x1="0" y1="0" x2="3" y2="0" stroke-width=".6" style="stroke:var(--hatch)"/></pattern></defs><rect x="1" y="13" width="32" height="7" fill="url(#lgPos)"/><line x1="1" y1="20" x2="33" y2="20" stroke-width="1.2" style="stroke:var(--ink)"/><circle cx="17" cy="6.5" r="5.5" style="fill:var(--bg)"/><circle cx="17" cy="6.5" r="5.5" fill="url(#lgX)" stroke="color-mix(in srgb, var(--hatch) 70%, #6E6E68)" stroke-width=".8" stroke-dasharray="1.8 1.3"/></svg><span><b>Unknown domains:</b> the soft band beyond the rim. Ideas within reach of what is known, found by combining existing ones.</span></div>
+        </details>
+        <details class="all-ideas">
+          <summary>Every idea, in date order</summary>
+          <p class="fine">The same ideas as the map, as a list. Choose one to see what it was built on and what it led to.</p>
+          <ol class="idea-list" id="ideaList"></ol>
         </details>
         <details class="made-cut">
           <summary>What made the cut</summary>
@@ -434,57 +452,57 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
         </details>
         <details class="credits">
           <summary>Image credits</summary>
-          <p>Images from Wikimedia Commons, shown in a green duotone. Liu Hui, Huygens' light, the Besso conversation, light quanta and E = mc² are drawn for this map.</p>
+          <p>All images come from Wikimedia Commons and are cropped and shown in a green duotone. Liu Hui, Huygens' light, the Besso conversation, light quanta and E = mc² are drawn for this map.</p>
           <ul>
-            <li><b>Zeno's paradoxes</b>: Zeno of Elea Tibaldi or Carducci Escorial (Public domain), Wikimedia Commons</li>
-            <li><b>A privileged state of rest</b>: Aristotle Altemps Detail, Copy of Lysippus (Public domain), Wikimedia Commons</li>
-            <li><b>Axiomatic geometry</b>: P. Oxy. I 29, Euclid (Public domain), Wikimedia Commons</li>
-            <li><b>Light travels to the eye</b>: Alhazen, the Persian (Public domain), Wikimedia Commons</li>
-            <li><b>Motion is relative</b>: Oresme (Public domain), Wikimedia Commons</li>
-            <li><b>Heliocentrism</b>: Copernican heliocentrism diagram-2 (Public domain), Wikimedia Commons</li>
-            <li><b>Principle of relativity</b>: Justus Sustermans - Portrait of Galileo Galilei - WGA21972 (Public domain), Wikimedia Commons</li>
-            <li><b>Coordinates</b>: Frans Hals - Portret van René Descartes (cropped), after Frans Hals (Public domain), Wikimedia Commons</li>
-            <li><b>Pendulum clock</b>: Huygens first pendulum clock - front view (Public domain), Wikimedia Commons</li>
-            <li><b>Finite speed of light</b>: Ole Rømer (Public domain), Wikimedia Commons</li>
-            <li><b>Absolute space and time</b>: Newton&#x27;s Principia, Isaac Newton (Public domain), Wikimedia Commons</li>
-            <li><b>Relational space</b>: Gottfried Wilhelm Leibniz c1700 (1670 (Public domain), Wikimedia Commons</li>
-            <li><b>Aberration of starlight</b>: James Bradley (Public domain), Wikimedia Commons</li>
-            <li><b>Concepts from experience</b>: David Hume (Public domain), Wikimedia Commons</li>
-            <li><b>Marine chronometer</b>: H4 low 250 (CC BY-SA 3.0), Wikimedia Commons</li>
-            <li><b>Space and time in the mind</b>: Immanuel Kant (painted portrait), unbekannt, möglicherweise Elisabeth von Stägemann (Schule vo (Public domain), Wikimedia Commons</li>
-            <li><b>Double-slit interference</b>: Young Diffraction (Public domain), Wikimedia Commons</li>
-            <li><b>Partial aether drag</b>: Augustin Fresnel, E Rosette after a painting by A Tardieu (Public domain), Wikimedia Commons</li>
-            <li><b>Non-Euclidean geometry</b>: Lobachevsky 03 crop (1793-1843)&quot; (Public domain), Wikimedia Commons</li>
-            <li><b>Electromagnetic induction</b>: M Faraday Th Phillips oil 1842 (Public domain), Wikimedia Commons</li>
-            <li><b>Electric telegraph</b>: Cooke and Wheatstone electric telegraph, Geni (CC BY-SA 4.0), Wikimedia Commons</li>
-            <li><b>Light in moving water</b>: Hippolyte Fizeau, Charles Reutlinger, b.1816 (Public domain), Wikimedia Commons</li>
-            <li><b>Early integration</b>: Hazan, artwork drawn by Adolph Boÿ, engraved by Jeremias Falck (Public domain), Wikimedia Commons</li>
-            <li><b>Calculus</b>: Acta1684Seite 1 (Public domain), Wikimedia Commons</li>
-            <li><b>Thermodynamics</b>: Das Fotoalbum für Weierstraß 2 4 (Rudolf Clausius) (Public domain), Wikimedia Commons</li>
-            <li><b>Bernstein's science books</b>: Wilhelm Fechner - Portrait Aron Bernstein (1812-1884) (Public domain), Wikimedia Commons</li>
-            <li><b>Maxwell in vector form</b>: Oliver Heaviside2, Original uploader was Sup (Public domain), Wikimedia Commons</li>
-            <li><b>Curved space</b>: Georg Friedrich Bernhard Riemann (Public domain), Wikimedia Commons</li>
-            <li><b>Maxwell's equations</b>: James Clerk Maxwell, digitized from an engraving by G. J. Stodart from a photogra (Public domain), Wikimedia Commons</li>
-            <li><b>Standard time zones</b>: PSM V26 D162 Standard railway time vs greenwich mean time (Public domain), Wikimedia Commons</li>
-            <li><b>Critique of absolute space</b>: Ernst-Mach-1900 (Public domain), Wikimedia Commons</li>
-            <li><b>Michelson–Morley null result</b>: Michelson morley experiment 1887, Case Western Reserve University (Public domain), Wikimedia Commons</li>
-            <li><b>Radio waves</b>: Heinrich Rudolf Hertz, Robert Krewaldt (Public domain), Wikimedia Commons</li>
-            <li><b>Length contraction</b>: George Francis FitzGerald, Hollinger and Rockey photographers, New York. (Public domain), Wikimedia Commons</li>
-            <li><b>Coordinated clocks</b>: CH Bern Kramgasse, Daniel Schwen (CC BY-SA 4.0), Wikimedia Commons</li>
-            <li><b>Magnet and conductor</b>: Foppl August (Public domain), Wikimedia Commons</li>
-            <li><b>Lorentz transformations</b>: Hendrik Antoon Lorentz, The website of the Royal (Public domain), Wikimedia Commons</li>
-            <li><b>Chasing light</b>: Albert Einstein as a child (Public domain), Wikimedia Commons</li>
-            <li><b>Simultaneity by signal</b>: Henri Poincaré-2 (Public domain), Wikimedia Commons</li>
-            <li><b>Patent office work</b>: Einstein patentoffice full, Lucien Chavan [ (Public domain), Wikimedia Commons</li>
-            <li><b>Olympia Academy</b>: Einstein-with-habicht-and-solovine, Emil Vollenwe (Public domain), Wikimedia Commons</li>
-            <li><b>Special relativity</b>: Einstein, on the electrodynamics of moving bodies, 1905, NASA Universe (CC BY 2.0), Wikimedia Commons</li>
-            <li><b>Spacetime</b>: Hermann Minkowski Portrait, Hermann Minkowski (Public domain), Wikimedia Commons</li>
-          <li><b>Planck's constant</b>: Max Planck 1901 (Public domain), Wikimedia Commons</li>
-            <li><b>Photoelectric measurements</b>: Phillipp Lenard in 1900 (Public domain), Wikimedia Commons</li>
-            <li><b>General relativity</b>: 1919 eclipse positive, F. W. Dyson, A. S. Eddington and C. Davidson (Public domain), Wikimedia Commons</li>
-            <li><b>Antimatter</b>: Paul Dirac, 1933 (cropped), Nobel Foundation (Public domain), Wikimedia Commons</li>
-            <li><b>Nuclear energy</b>: Lise Meitner, Harris &amp; Ewing (Public domain), Wikimedia Commons</li>
-            <li><b>GPS</b>: GPS satellite approaching 23 years on orbit (cropped), U.S. Space Force (Public domain), Wikimedia Commons</li>
+            <li><b>Zeno's paradoxes</b>: Zeno of Elea, fresco attributed to Pellegrino Tibaldi or Bartolomeo Carducci, El Escorial (public domain).</li>
+            <li><b>A privileged state of rest</b>: Aristotle, Roman copy after Lysippus, Palazzo Altemps (public domain).</li>
+            <li><b>Axiomatic geometry</b>: Fragment of Euclid's Elements, Papyrus Oxyrhynchus 29 (public domain).</li>
+            <li><b>Light travels to the eye</b>: An imagined portrait of Ibn al-Haytham (Alhazen); no authentic likeness survives (public domain).</li>
+            <li><b>Motion is relative</b>: Nicole Oresme, from a medieval manuscript (public domain).</li>
+            <li><b>Heliocentrism</b>: Copernican heliocentric diagram (public domain).</li>
+            <li><b>Principle of relativity</b>: Galileo Galilei, portrait by Justus Sustermans (public domain).</li>
+            <li><b>Coordinates</b>: René Descartes, after Frans Hals (public domain).</li>
+            <li><b>Pendulum clock</b>: Huygens's first pendulum clock (public domain).</li>
+            <li><b>Finite speed of light</b>: Ole Rømer (public domain).</li>
+            <li><b>Absolute space and time</b>: Newton's Principia (public domain).</li>
+            <li><b>Relational space</b>: Gottfried Wilhelm Leibniz, c. 1700 (public domain).</li>
+            <li><b>Aberration of starlight</b>: James Bradley (public domain).</li>
+            <li><b>Concepts from experience</b>: David Hume (public domain).</li>
+            <li><b>Marine chronometer</b>: Harrison's H4, photograph by Phantom Photographer (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>, cropped and tinted).</li>
+            <li><b>Space and time in the mind</b>: Immanuel Kant, painted portrait, possibly by Elisabeth von Stägemann, school of Anton Graff (public domain).</li>
+            <li><b>Double-slit interference</b>: Thomas Young's diagram of interference (public domain).</li>
+            <li><b>Partial aether drag</b>: Augustin Fresnel, engraving by E. Rosette after A. Tardieu (public domain).</li>
+            <li><b>Non-Euclidean geometry</b>: Nikolai Lobachevsky, portrait detail (public domain).</li>
+            <li><b>Electromagnetic induction</b>: Michael Faraday, oil portrait by Thomas Phillips, 1842 (public domain).</li>
+            <li><b>Electric telegraph</b>: Cooke and Wheatstone electric telegraph, photograph by Geni (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, cropped and tinted).</li>
+            <li><b>Light in moving water</b>: Hippolyte Fizeau, photograph by Charles Reutlinger (public domain).</li>
+            <li><b>Early integration</b>: Frontispiece of Hevelius's Selenographia, drawn by Adolph Boÿ, engraved by Jeremias Falck (public domain).</li>
+            <li><b>Calculus</b>: First page of Leibniz's 1684 paper in Acta Eruditorum (public domain).</li>
+            <li><b>Thermodynamics</b>: Rudolf Clausius, from the Weierstrass photograph album (public domain).</li>
+            <li><b>Bernstein's science books</b>: Aaron Bernstein, portrait by Wilhelm Fechner (public domain).</li>
+            <li><b>Maxwell in vector form</b>: Oliver Heaviside (public domain).</li>
+            <li><b>Curved space</b>: Bernhard Riemann (public domain).</li>
+            <li><b>Maxwell's equations</b>: James Clerk Maxwell, engraving by G. J. Stodart from a photograph by Fergus of Greenock (public domain).</li>
+            <li><b>Standard time zones</b>: Standard railway time and Greenwich mean time, Popular Science Monthly, 1885 (public domain).</li>
+            <li><b>Critique of absolute space</b>: Ernst Mach, c. 1900 (public domain).</li>
+            <li><b>Michelson–Morley null result</b>: The Michelson–Morley apparatus, 1887, Case Western Reserve University (public domain).</li>
+            <li><b>Radio waves</b>: Heinrich Hertz, photograph by Robert Krewaldt (public domain).</li>
+            <li><b>Length contraction</b>: George Francis FitzGerald, photograph by Hollinger and Rockey, New York (public domain).</li>
+            <li><b>Coordinated clocks</b>: Kramgasse, Bern, photograph by Daniel Schwen (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, cropped and tinted).</li>
+            <li><b>Magnet and conductor</b>: August Föppl (public domain).</li>
+            <li><b>Lorentz transformations</b>: Hendrik Antoon Lorentz (public domain).</li>
+            <li><b>Chasing light</b>: Albert Einstein as a child (public domain).</li>
+            <li><b>Simultaneity by signal</b>: Henri Poincaré (public domain).</li>
+            <li><b>Patent office work</b>: Einstein at the Bern patent office, photograph by Lucien Chavan (public domain).</li>
+            <li><b>Olympia Academy</b>: Einstein with Conrad Habicht and Maurice Solovine, photograph by Emil Vollenweider (public domain).</li>
+            <li><b>Special relativity</b>: Einstein's 1905 paper in Annalen der Physik, photograph by NASA Universe (<a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a>, cropped and tinted).</li>
+            <li><b>Spacetime</b>: Hermann Minkowski (public domain).</li>
+            <li class="branch-note" hidden><b>Planck's constant</b>: Max Planck, 1901 (public domain).</li>
+            <li class="branch-note" hidden><b>Photoelectric measurements</b>: Philipp Lenard, 1900 (public domain).</li>
+            <li><b>General relativity</b>: Photographic plate of the 1919 eclipse, F. W. Dyson, A. S. Eddington and C. Davidson (public domain).</li>
+            <li><b>Antimatter</b>: Paul Dirac, 1933, Nobel Foundation (public domain).</li>
+            <li><b>Nuclear energy</b>: Lise Meitner, photograph by Harris &amp; Ewing (public domain).</li>
+            <li><b>GPS</b>: GPS satellite in orbit, U.S. Space Force (public domain).</li>
           </ul>
         </details>
       </div>
@@ -549,10 +567,10 @@ const NODES=[
   idea:"Zeno of Elea argued that motion is impossible. To cross a room you must first cover half the distance, then half of what remains, and so on without end, so you never arrive. In Achilles and the tortoise, a fast runner can never catch a slow one with a head start. The puzzles showed that dividing space and time infinitely raised problems no one could yet solve.",
   gave:'The oldest open question on the map: what it means for something to move through space over time.'},
  {id:'aristotle',year:-350,when:'c. 350 BCE',who:'Aristotle',t:"A privileged state of rest",title:'Physics',d:'mech',th:-14,
-  idea:"In his Physics, Aristotle held that every motion needs a cause. Earthly objects move only while something pushes them and naturally come to rest, while heavenly bodies circle forever. The Earth sits motionless at the centre of the cosmos, giving a single, privileged state of rest against which all motion is measured.",
+  idea:"In his Physics, Aristotle held that every motion needs a cause. Objects pushed or thrown keep moving only while something drives them, and otherwise seek their natural place and stop, while heavenly bodies circle forever. In On the Heavens he set the Earth motionless at the centre of the cosmos, giving a single, privileged state of rest against which all motion is measured.",
   gave:'The picture of a privileged state of rest that Galileo began to dismantle and Einstein finished off.'},
  {id:'euclid',year:-300,when:'c. 300 BCE',who:'Euclid',t:"Axiomatic geometry",title:'Elements',d:'math',th:28,
-  idea:"Euclid's Elements builds the whole of plane geometry from five postulates and a few common notions, proving each theorem from those before it. The fifth, the parallel postulate, says that through a point outside a line exactly one parallel line can be drawn. For 2,000 years the book was the model of certain knowledge.",
+  idea:"Euclid's Elements builds the whole of plane geometry from five postulates and a few common notions, proving each theorem from those before it. The fifth, the parallel postulate, amounts to saying that through a point outside a line exactly one parallel line can be drawn. For 2,000 years the book was the model of certain knowledge.",
   gave:'The flat geometry that Newton\'s absolute space assumed, and the axiomatic method of 1905: two postulates, then deduce everything. Einstein met a Euclidean geometry book at twelve and later called it his holy geometry booklet.'},
  {id:'alhazen',year:1021,when:'c. 1011–1021',who:'Ibn al-Haytham',t:"Light travels to the eye",title:'Book of Optics',d:'optics',th:-2,
   idea:"In his seven-volume Book of Optics, Ibn al-Haytham used experiments with darkened rooms and pinholes to show that we see because light travels from objects into the eye, rather than the eye sending out rays. He treated light as something that moves in straight lines and argued that it must take time to travel, however fast it is.",
@@ -570,16 +588,16 @@ const NODES=[
   idea:"In La Géométrie, Descartes described each point by numbers measured from fixed reference lines, so a curve could be written as an equation and an equation drawn as a curve. This coordinate system joined algebra to geometry and gave physics a way to label where and when things happen.",
   gave:'Coordinate systems. The 1905 paper is built on two of them, K at rest and k in motion, and asks how coordinates in one translate into the other.'},
  {id:'huygensClock',year:1656,when:'1656',who:'Christiaan Huygens',t:'Pendulum clock',title:'The pendulum clock',d:'tech',th:40,
-  idea:"Huygens built the first pendulum clock, using the fact that a pendulum takes almost the same time for each swing. It cut a clock's error from about fifteen minutes a day to under a minute. Time became something a machine could measure precisely and repeatably.",
+  idea:"Huygens built the first pendulum clock, using the fact that a pendulum takes almost the same time for each swing. It cut a clock's error from about fifteen minutes a day to about fifteen seconds. Time became something a machine could measure precisely and repeatably.",
   gave:'Time as a reading on a precise machine. Einstein\'s paper defines time as what a clock shows.'},
  {id:'romer',year:1676,when:'1676',who:'Ole Rømer',t:'Finite speed of light',title:'Light takes time to travel',d:'astro',th:-26,
   idea:"Watching Jupiter's moon Io from Paris, Ole Rømer noticed that its eclipses came earlier when Earth was approaching Jupiter and later when it was moving away, by up to about 22 minutes across Earth's orbit. He explained the delay as the extra time light needs to cover the greater distance. It was the first evidence that light has a finite speed.",
-  gave:'Turned the speed of light into a number, the c at the centre of 1905.'},
+  gave:'Showed that light takes time to travel. Huygens soon turned Rømer\'s delay into a first value for its speed, the c at the centre of 1905.'},
  {id:'newton',year:1687,when:'1687',who:'Isaac Newton',t:"Absolute space and time",title:'Philosophiæ Naturalis Principia Mathematica',d:'mech',th:-12,
   idea:"Newton's Principia set out three laws of motion and the law of universal gravitation, explaining falling objects and planetary orbits with the same mathematics. He framed them within absolute space, a fixed stage that exists independently of matter, and absolute time, which he said \"flows equably without relation to anything external\".",
   gave:'The framework 1905 overturned. Newton\'s mechanics already obeyed Galileo\'s relativity; his absolute time was the assumption Einstein dropped.'},
  {id:'huygensLight',year:1690,when:'1690',who:'Christiaan Huygens',t:'Light as a wave',title:'Treatise on Light',d:'optics',th:-5,
-  idea:"In his Treatise on Light, Huygens proposed that light is a wave. Every point on a wavefront acts as the source of small spherical wavelets, and the next wavefront is the surface that touches them all. The principle explained reflection and refraction, but a wave needs something to travel through, so it implied an invisible medium filling space: the aether.",
+  idea:"In his Treatise on Light, Huygens proposed that light is a disturbance spreading through a very fine, invisible medium. Every point on a wavefront acts as the source of small spherical wavelets, and the next wavefront is the surface that touches them all. The principle explained reflection and refraction, and it rested on a medium filling all of space: the aether.",
   gave:'The wave picture of light, and with it the need for a medium to carry it: the luminiferous aether.'},
  {id:'leibniz',year:1716,when:'1715–16',who:'Gottfried Leibniz and Samuel Clarke',t:'Relational space',title:'The Leibniz–Clarke correspondence',d:'phil',th:-44,
   idea:"In letters with Samuel Clarke, a defender of Newton, Leibniz argued that space is not a container that exists on its own. It is only the set of relations between objects, and time only the order of events. If the whole universe were shifted somewhere else, nothing observable would change, so absolute space explains nothing.",
@@ -597,7 +615,7 @@ const NODES=[
   idea:"In the Critique of Pure Reason, Immanuel Kant argued that space and time are not features we discover in the world. They are forms the mind brings to all experience. As a result, the truths of Euclidean geometry and of a single, uniform time could be known with certainty before any observation.",
   gave:'A view so confident it became a target. Einstein read Kant as a teenager; Mach and Poincaré argued against it.'},
  {id:'young',year:1801,when:'1801–03',who:'Thomas Young',t:"Double-slit interference",title:'Interference of light',d:'optics',th:3,
-  idea:"Thomas Young passed light through two narrow openings onto a screen and saw alternating bright and dark bands. Where waves from the two openings arrived in step they reinforced each other, and where they arrived out of step they cancelled out. A stream of particles could not produce dark bands, so the result was strong evidence that light is a wave.",
+  idea:"Thomas Young split a narrow beam of sunlight with the edge of a thin card, and described doing the same with two small slits, and saw alternating bright and dark bands. Where waves from the two paths arrived in step they reinforced each other, and where they arrived out of step they cancelled out. A stream of particles could not produce dark bands, so the result was strong evidence that light is a wave.",
   gave:'Firm evidence that light is a wave, sharpening the question of what it waves in.'},
  {id:'fresnel',year:1818,when:'1818',who:'Augustin-Jean Fresnel',t:"Partial aether drag",title:'Partial aether drag',d:'optics',th:-4,
   idea:"Augustin-Jean Fresnel built a full mathematical wave theory of light. To explain why Earth's motion seemed to make no difference to optical experiments, he proposed that a moving transparent body such as glass or water drags the aether inside it only partly along, by an amount set by how strongly it bends light.",
@@ -613,7 +631,7 @@ const NODES=[
   gave:'The tool for sending time signals between observatories and stations, and for measuring longitude: the practical form of synchronising distant clocks.'},
  {id:'fizeau',year:1851,when:'1851',who:'Hippolyte Fizeau',t:"Light in moving water",title:'Light in moving water',d:'optics',th:4,
   idea:"Hippolyte Fizeau sent two beams of light through tubes of flowing water, one with the current and one against it, then recombined them to compare their travel times. Moving water did change the speed of light, but by less than half the water's own speed. That matched Fresnel's prediction that the aether is only partly carried along.",
-  gave:'Evidence Einstein later called decisive for his thinking, more so than Michelson and Morley.'},
+  gave:'Einstein later named it, with aberration, as the result that influenced him most, more than Michelson and Morley: "They were enough."'},
  {id:'liuhui',year:263,when:'263 CE',who:'Liu Hui',t:"Limits and π",title:'Commentary on the Nine Chapters',d:'math',th:23.5,
   idea:"In his commentary on the Nine Chapters on the Mathematical Art, Liu Hui calculated π by fitting polygons inside a circle and repeatedly doubling their sides: 6, 12, 24 and on to 192. Each step brought the polygon closer to the circle, giving π ≈ 3.14. It is one of the earliest uses of a limit.",
   gave:'The idea of reaching a value through ever finer steps, which calculus later turned into a general method.'},
@@ -621,7 +639,7 @@ const NODES=[
   idea:"To find the volume of the solid made by spinning a parabola, Ibn al-Haytham sliced it into thin discs and added them up. That needed a formula for the sum of fourth powers (1⁴ + 2⁴ + 3⁴ + …), which he worked out. Adding up ever thinner slices is the core idea of integration.",
   gave:'An early form of integration, more than 600 years before Newton and Leibniz.'},
  {id:'calculus',year:1670,when:'1665–1684',who:'Isaac Newton and Gottfried Leibniz',t:'Calculus',title:'The calculus',d:'math',th:31.5,
-  idea:"Working separately, Newton and Leibniz developed calculus, the mathematics of continuous change. Derivatives measure how fast a quantity changes at an instant, and integrals add up infinitely many small pieces. Leibniz published first, in 1684. Calculus also settled Zeno's puzzle, showing how infinitely many steps can add up to a finite distance.",
+  idea:"Working separately, Newton and Leibniz developed calculus, the mathematics of continuous change. Derivatives measure how fast a quantity changes at an instant, and integrals add up infinitely many small pieces. Leibniz published first, in 1684. Calculus also gave the standard modern answer to Zeno: infinitely many steps can add up to a finite distance.",
   gave:'The language of physics. Newton\'s mechanics and Maxwell\'s equations are written in it, and Einstein derives the Lorentz transformation in 1905 with partial derivatives.'},
  {id:'thermo',year:1850,when:'1850s',who:'Rudolf Clausius and William Thomson',t:'Thermodynamics',title:'The laws of thermodynamics',d:'mech',th:-19.5,
   idea:"Clausius and Thomson set out the laws of thermodynamics: energy is never created or destroyed, and heat flows on its own only from hot to cold. The laws held whatever heat actually was and however atoms behaved, so physicists could reason from them without knowing the mechanism underneath.",
@@ -630,8 +648,8 @@ const NODES=[
   idea:"Aaron Bernstein's Popular Books on Natural Science explained science to general readers through vivid imagined scenes. In one, the reader travels along a telegraph wire with an electrical signal. Einstein read the series at about 12 and later said he read it with breathless attention.",
   gave:'An early taste for picturing physics from the inside, and possibly the seed of chasing a light beam.'},
  {id:'vectors',year:1885,when:'1884–85',who:'Oliver Heaviside and Josiah Willard Gibbs',t:"Maxwell in vector form",title:'Vector analysis',d:'math',th:27.5,
-  idea:"Maxwell first wrote his theory as twenty equations in twenty variables. Heaviside and Gibbs introduced vector notation, which bundles the three directions of space into a single quantity, and rewrote the theory as four compact equations, the form still taught today.",
-  gave:'The version of the equations the 1905 paper works with, which Einstein calls the Maxwell-Hertz equations.'},
+  idea:"Maxwell first wrote his theory as twenty equations in twenty variables. Gibbs and Heaviside developed vector notation, which bundles the three directions of space into a single quantity. Heaviside used it to rewrite the theory as four compact equations, the form still taught today. Hertz reached the same form independently in 1890.",
+  gave:'The compact four-equation form of Maxwell\'s theory. Einstein writes it out in components and calls it the Maxwell-Hertz equations, after Hertz\'s version.'},
  {id:'riemann',year:1854,when:'1854',who:'Bernhard Riemann',t:"Curved space",title:'On the Hypotheses which lie at the Foundations of Geometry',d:'math',th:26,
   idea:"In a lecture at Göttingen, Bernhard Riemann extended geometry to spaces of any number of dimensions that can curve differently from place to place. He argued that whether real space is flat or curved cannot be settled by reason alone. It is a question for measurement.",
   gave:'Made space itself something a physical theory could revise.'},
@@ -660,7 +678,7 @@ const NODES=[
   idea:"August Föppl's Introduction to Maxwell's Theory of Electricity was a standard German textbook of the 1890s. It discussed whether the current produced when a magnet and a conductor move past each other depends on which one is really moving, or only on their relative motion.",
   gave:'Gerald Holton argues Einstein studied it, and its framing echoes the opening of the 1905 paper.'},
  {id:'lorentz',year:1895,when:'1895–1904',who:'Hendrik Lorentz',t:'Lorentz transformations',title:'Local time and the Lorentz transformation',d:'em',th:10.5,side:'L',
-  idea:"Hendrik Lorentz built a theory of electrons moving through a stationary aether. To keep Maxwell's equations working for moving observers he introduced local time, a mathematical adjustment to the time coordinate, and by 1904 he had the full set of equations, now named after him, linking measurements in moving and stationary frames.",
+  idea:"Hendrik Lorentz built a theory of electrons moving through a stationary aether. To keep Maxwell's equations working for moving observers he introduced local time, a mathematical adjustment to the time coordinate, and by 1904 he had the coordinate equations now named after him, linking measurements in moving and stationary frames. Poincaré corrected the rest and gave them that name in 1905.",
   gave:'Einstein knew the 1895 work. He derived the same transformations from two postulates and treated local time as simply time.'},
  {id:'lightbeam',year:1895,when:'1895–96',who:'Albert Einstein, age 16',t:'Chasing light',title:'Riding alongside a light beam',d:'life',th:-56.5,
   idea:"At school in Aarau, the 16-year-old Einstein imagined riding alongside a beam of light at its own speed. He would see a frozen electromagnetic wave, standing still in space. Maxwell's equations allow no such thing, and nothing like it had ever been observed. The puzzle stayed with him for ten years.",
@@ -672,7 +690,7 @@ const NODES=[
   idea:"From June 1902, Einstein worked as a technical expert at the Swiss Patent Office in Bern. His job was to read applications, many of them for electrical devices, and judge whether each invention would really work as its inventor claimed.",
   gave:'Daily practice in judging how real machines work. Galison argues the work included patents for synchronising clocks.'},
  {id:'olympia',year:1902.1,when:'1902–04',who:'Einstein, Maurice Solovine and Conrad Habicht',t:'Olympia Academy',title:'The Olympia Academy',d:'life',th:-51,
-  idea:"In Bern, Einstein met regularly with Maurice Solovine and Conrad Habicht in a reading group they jokingly called the Olympia Academy. Over cheap dinners they read and argued through Hume, Mach, Poincaré's Science and Hypothesis, Spinoza and others.",
+  idea:"In Bern, Einstein met regularly with Maurice Solovine and Conrad Habicht in a reading group they jokingly called the Olympia Academy. Over cheap dinners they read and argued through Hume, Mach, Poincaré's Science and Hypothesis, Riemann's lecture on geometry, Spinoza and others.",
   gave:'The philosophical toolkit, read together and argued over, just before the breakthrough.'},
  {id:'besso',year:1905.3,when:'May 1905',who:'Michele Besso',t:'Besso conversation',title:'The conversation with Besso',d:'life',th:-54,r:.99,
   idea:"Michele Besso was Einstein's closest friend and a colleague at the patent office. In May 1905, after a long discussion of the problem with him, Einstein returned the next day and said he had solved it. The key was an analysis of the concept of time.",
@@ -681,7 +699,7 @@ const NODES=[
   idea:"To explain the colours of light given off by hot objects, Max Planck assumed that matter can only absorb or emit energy in fixed amounts, each equal to a new constant, h, multiplied by the light's frequency. He saw it as a mathematical trick. The formula matched experiment exactly.",
   gave:"The constant h behind Einstein's March 1905 light-quantum paper. Planck also accepted the relativity paper for Annalen der Physik and became its first major champion."},
  {id:'lenard',year:1902.3,when:'1902',who:"Philipp Lenard",t:"Photoelectric measurements",title:"On the Photoelectric Effect",d:'optics',th:5.5,
-  idea:"Shining ultraviolet light on a metal plate in a vacuum, Philipp Lenard measured the electrons knocked out. Brighter light freed more electrons, but not faster ones. Their energy depended only on the light's colour, which the wave theory of light could not explain.",
+  idea:"Shining ultraviolet light on a metal plate in a vacuum, Philipp Lenard measured the electrons knocked out. Brighter light freed more electrons, but not faster ones: their energy did not depend on brightness at all, which the wave theory of light could not explain.",
   gave:"The puzzling data that Einstein's light quanta explained."},
  {id:'photo',year:1905.2,when:'March 1905',who:"Albert Einstein",t:"Light quanta",title:"On a Heuristic Point of View Concerning the Production and Transformation of Light",d:'frontier',th:-16,r:1.0349,side:'L',
   idea:"Three months before relativity, Einstein proposed that light itself travels as separate packets of energy, each worth Planck's constant times its frequency. One packet frees one electron, so the electron's energy depends on the light's colour, not its brightness. It was the work cited for his 1921 Nobel Prize.",
@@ -696,12 +714,12 @@ const NODES=[
   idea:"In a 1908 lecture, Hermann Minkowski, once Einstein's mathematics teacher, showed that special relativity describes the geometry of a single four-dimensional spacetime. \"Henceforth space by itself, and time by itself, are doomed to fade away into mere shadows,\" he said, \"and only a kind of union of the two will preserve an independent reality.\"",
   gave:'The new edge became the next starting point: this geometry is the ground general relativity was built on in 1915.'},
  {id:'genrel',year:1915.9,when:'1915',who:"Albert Einstein",t:"General relativity",title:"The Field Equations of Gravitation",d:'beyond',th:-22,r:1.3,beyond:true,side:'L',
-  idea:"Einstein extended relativity to accelerated motion and gravity. Mass and energy curve the geometry of spacetime, and objects move along the straightest paths through that curved geometry, which we experience as gravity. The theory explained a small, long-standing error in Mercury's orbit and predicted that the Sun bends starlight.",
+  idea:"Einstein extended relativity to accelerated motion and gravity. Mass and energy curve the geometry of spacetime, and objects move along the straightest paths through that curved geometry, which we experience as gravity. The theory explained a small, long-standing anomaly in Mercury's orbit and predicted that the Sun bends starlight.",
   gave:"Relativity's next step outward: Minkowski's spacetime, bent by matter."},
  {id:'dirac',year:1928.1,when:'1928',who:"Paul Dirac",t:"Antimatter",title:"The Quantum Theory of the Electron",d:'beyond',th:22,r:1.3,beyond:true,
-  idea:"Paul Dirac wrote an equation for the electron that obeyed both quantum mechanics and special relativity. It worked, and it also predicted a particle with the electron's mass but the opposite charge. The positron was found in cosmic rays in 1932, the first antimatter.",
+  idea:"Paul Dirac wrote an equation for the electron that obeyed both quantum mechanics and special relativity. It worked, but it also had puzzling solutions with negative energy. In 1931 Dirac concluded they meant a particle with the electron's mass and the opposite charge. Carl Anderson found this positron in cosmic rays in 1932, the first antimatter.",
   gave:"Relativity joined with quantum theory, the basis of all modern particle physics."},
- {id:'nuclear',year:1938.9,when:'1938',who:"Lise Meitner, Otto Hahn and Otto Frisch",t:"Nuclear energy",title:"Nuclear fission",d:'beyond',th:36,r:1.24,beyond:true,
+ {id:'nuclear',year:1938.9,when:'1938–39',who:"Otto Hahn, Fritz Strassmann, Lise Meitner and Otto Frisch",t:"Nuclear energy",title:"Nuclear fission",d:'beyond',th:36,r:1.24,beyond:true,
   idea:"Hahn and Strassmann found that uranium struck by neutrons splits into lighter elements, and Meitner and Frisch explained why. The pieces weigh slightly less than the original nucleus, and the missing mass is released as energy, exactly as E = mc² predicts.",
   gave:"E = mc² made visible: a tiny loss of mass, a huge release of energy."},
  {id:'gps',year:1978.2,when:'1978',who:"US Department of Defense",t:"GPS",title:"The Global Positioning System",d:'beyond',th:56,r:1.22,beyond:true,
@@ -718,8 +736,8 @@ ordered.forEach((n,i)=>n.num=i+1);
 const EDGES=[
  ['zeno','aristotle','Puzzles about motion'],
  ['aristotle','galileo','Rest stops being special'],
- ['oresme','copernicus','Motion is judged relatively'],
- ['oresme','galileo','Undetectable motion'],
+ ['oresme','copernicus','Motion is judged relatively (a parallel)',true],
+ ['oresme','galileo','Undetectable motion (a parallel)',true],
  ['copernicus','galileo','Why nobody feels the Earth move'],
  ['galileo','newton','Inertia and relativity of mechanics'],
  ['galileo','sr','The first postulate'],
@@ -728,19 +746,19 @@ const EDGES=[
  ['euclid','noneuclid','The parallel postulate questioned'],
  ['descartes','newton','Coordinates'],
  ['descartes','sr','Frames K and k'],
- ['alhazen','huygensLight','Light as something that travels'],
+ ['alhazen','huygensLight','Light as something that travels',true],
  ['huygensLight','young','Waves'],
  ['young','fresnel','Wave optics'],
  ['fresnel','fizeau','Drag put to the test'],
  ['fresnel','lorentz','Drag explained'],
  ['romer','bradley','A known speed of light'],
- ['romer','maxwell','Measured c matches theory'],
+ ['bradley','maxwell','Aberration gives c'],
  ['bradley','fresnel','Aberration needs an aether'],
  ['bradley','sr','Aberration, section 7'],
  ['newton','leibniz','Absolute space disputed'],
  ['newton','mach','The target of the critique'],
  ['newton','sr','Absolute time dropped'],
- ['leibniz','mach','Relational space'],
+ ['leibniz','mach','Relational space',true],
  ['hume','olympia','Read together'],
  ['hume','sr','Concepts tied to experience'],
  ['kant','poincare','Space as a framework of the mind',true],
@@ -751,11 +769,11 @@ const EDGES=[
  ['telegraph','poincare','Longitude by telegraph signal'],
  ['standardTime','electricClocks','Synchronised networks'],
  ['electricClocks','patent','Clock patents',true],
- ['noneuclid','riemann','Geometry as physics'],
+ ['noneuclid','riemann','Geometry beyond Euclid, via Gauss',true],
  ['noneuclid','poincare','Geometry by convention'],
- ['zeno','calculus','Infinite division made precise'],
- ['liuhui','calculus','Limits'],
- ['haythamSums','calculus','Early integration'],
+ ['zeno','calculus','Infinite division made precise',true],
+ ['liuhui','calculus','Limits (a parallel discovery)',true],
+ ['haythamSums','calculus','Early integration (a parallel discovery)',true],
  ['descartes','calculus','Curves as equations'],
  ['calculus','newton','The mathematics of motion'],
  ['calculus','maxwell','Field equations'],
@@ -765,13 +783,13 @@ const EDGES=[
  ['bernstein','lightbeam','Picturing physics from the inside',true],
  ['maxwell','vectors','Twenty equations made four'],
  ['calculus','vectors','Vector calculus'],
- ['vectors','sr','The equations the paper uses'],
- ['riemann','minkowski','Geometry of space, then spacetime'],
+ ['vectors','sr','The four-equation form',true],
+ ['riemann','genrel','Curved geometry'],
  ['faraday','maxwell','Fields'],
  ['faraday','foppl','Magnet and conductor'],
  ['faraday','sr','The opening asymmetry'],
  ['fizeau','lorentz','Data to explain'],
- ['fizeau','sr','Decisive evidence'],
+ ['fizeau','sr','"They were enough"'],
  ['maxwell','hertz','Prediction confirmed'],
  ['maxwell','michelson','Is there an aether wind?'],
  ['maxwell','lorentz','Electrodynamics of moving bodies'],
@@ -779,6 +797,7 @@ const EDGES=[
  ['maxwell','lightbeam','No frozen waves'],
  ['maxwell','sr','The second postulate, c'],
  ['hertz','lorentz','Maxwell settled'],
+ ['hertz','sr','The Maxwell-Hertz equations, named in the paper'],
  ['mach','olympia','Read together'],
  ['mach','sr','Measurement defines meaning'],
  ['michelson','contraction','Null result to explain'],
@@ -798,7 +817,7 @@ const EDGES=[
  ['thermo','photo','Reasoning from entropy'],
  ['hertz','photo','Photoelectric effect first seen, 1887'],
  ['hertz','lenard','Light that frees electrons'],
- ['lenard','photo','Energy set by colour, not brightness'],
+ ['lenard','photo','Energy independent of brightness'],
  ['maxwell','photo','The wave picture it challenged'],
  ['photo','dirac','Quantum theory'],
  ['minkowski','genrel','Curved spacetime'],
@@ -1043,6 +1062,15 @@ window.addEventListener('pointerup',up);window.addEventListener('pointercancel',
 $('#zin').onclick=()=>zoomAt(W/2,H/2,1/1.5);
 $('#zout').onclick=()=>zoomAt(W/2,H/2,1.5);
 $('#zfit').onclick=()=>setFrame('overview');
+gN.addEventListener('focusin',ev=>{const g=ev.target.closest&&ev.target.closest('.node');if(!g||ptrs.size)return;
+  const n=NODES.find(m=>nodeEls[m.id]===g);if(!n)return;const sx=(n.x-cam.x)/cam.u+W/2,sy=(n.y-cam.y)/cam.u+H/2,pad=80;
+  if(sx<pad||sx>W-pad||sy<pad||sy>H-insets().b-pad){clearFrame();flyTo({x:n.x,y:n.y,u:cam.u},500);}});
+stage.addEventListener('keydown',ev=>{if(!focusEl.hidden||ev.target.closest('.toolbar,.zoomctl'))return;const k=ev.key,st=60*cam.u;
+  const pan={ArrowLeft:[-st,0],ArrowRight:[st,0],ArrowUp:[0,-st],ArrowDown:[0,st]}[k];
+  if(pan&&!ev.target.closest('.node')){ev.preventDefault();cam.x+=pan[0];cam.y+=pan[1];clearFrame();render();}
+  else if(k==='+'||k==='='){ev.preventDefault();zoomAt(W/2,H/2,1/1.4);}
+  else if(k==='-'||k==='_'){ev.preventDefault();zoomAt(W/2,H/2,1.4);}
+  else if(k==='0'){ev.preventDefault();setFrame('overview');}});
 document.querySelectorAll('[data-frame]').forEach(b=>b.onclick=()=>setFrame(b.dataset.frame));
 
 /* ---------- time ---------- */
@@ -1234,8 +1262,10 @@ function renderCrumbs(){
 }
 let fadeTok=0;
 const FADE=reduce?0:240;
+let returnTo=null;
 function openFocus(id,fresh){
   const wasOpen=!focusEl.hidden;
+  if(!wasOpen)returnTo=document.activeElement;
   if(fresh&&!wasOpen)trail=[];
   const at=trail.indexOf(id);if(at>=0)trail=trail.slice(0,at+1);else{trail.push(id);if(trail.length>6)trail=trail.slice(-6);}
   mode='focus';
@@ -1257,13 +1287,15 @@ function openFocus(id,fresh){
     $('#showOnMap').onclick=()=>{closeFocus(id);const n=BY[id];if(n.year>curYear){slider.value=1000;applyYear(yearOf(1000));}clearFrame();flyTo({x:n.x,y:n.y,u:Math.min(cam.u,1.3)},800);};
     renderCrumbs();
     select(id);
+    const h=fwrap.querySelector('.subject h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}
     requestAnimationFrame(()=>{fwrap.style.opacity=1;focusEl.style.opacity=1;});
   };
   // soft fades only: the old idea fades out, the new one fades in
   if(wasOpen){fwrap.style.opacity=0;setTimeout(fill,FADE);}
   else{focusEl.style.opacity=0;fwrap.style.opacity=1;focusEl.hidden=false;fill();}
 }
-function closeFocus(keep){mode='map';const tok=++fadeTok;focusEl.style.opacity=0;setTimeout(()=>{if(tok===fadeTok)focusEl.hidden=true;},FADE);select(keep||null);}
+function closeFocus(keep){mode='map';const tok=++fadeTok;focusEl.style.opacity=0;setTimeout(()=>{if(tok===fadeTok)focusEl.hidden=true;},FADE);select(keep||null);
+  const back=keep?nodeEls[keep]:returnTo;if(back&&back.isConnected&&back.focus)back.focus({preventScroll:!!keep});returnTo=null;}
 $('#toMap').onclick=()=>closeFocus();
 new ResizeObserver(()=>drawLines()).observe(fscroll);
 window.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!focusEl.hidden)closeFocus();});
@@ -1362,6 +1394,9 @@ document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>applyView(b.da
 applyView('all');
 document.querySelectorAll('.nIdeas').forEach(e=>e.textContent=SRANC.size);
 document.querySelectorAll('.nNum').forEach(e=>e.textContent=ordered.length);
+function buildList(){$('#ideaList').innerHTML=[...ordered,...NODES.filter(n=>n.beyond).sort((a,b)=>a.year-b.year)].filter(n=>branchVisible(n.id)).map(n=>
+  `<li><button data-id="${n.id}"><span class="il-when">${esc(n.when)}</span><span class="il-t">${esc(n.t)}</span><span class="il-f">${esc(domName(n))}${n.beyond?' · after 1905':''}</span></button></li>`).join('');
+  $('#ideaList').querySelectorAll('button').forEach(b=>b.onclick=()=>openFocus(b.dataset.id,true));}
 
 requestAnimationFrame(animBlobs);
 /* ---------- light-quanta branch: hidden unless switched on in the colour settings ---------- */
@@ -1378,6 +1413,7 @@ function applyBranch(){
   if(selected&&!branchVisible(selected))select(null);
 }
 applyBranch();
+buildList();
 
 /* ---------- start ---------- */
 applyYear(yearOf(1000));
