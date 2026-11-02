@@ -1,4 +1,24 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Frontier 1905</title>
+<meta name="description" content="An interactive map of the 43 ideas, from six fields and more than 2,300 years, that led to Einstein's special relativity in 1905.">
+<meta name="theme-color" content="#FFFFFA">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="canonical" href="https://vibol-zulu.github.io/frontier-1905/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Frontier 1905">
+<meta property="og:description" content="The 43 ideas, from six fields and more than 2,300 years, that led to Einstein's special relativity.">
+<meta property="og:url" content="https://vibol-zulu.github.io/frontier-1905/">
+<meta property="og:image" content="https://vibol-zulu.github.io/frontier-1905/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Frontier 1905: a circle of human knowledge with a swell at special relativity.">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -18,6 +38,7 @@
   color-scheme:light;
 }
 
+[hidden]{display:none!important}
 html,body{height:100%}
 body{background:var(--bg); color:var(--ink); font-family:var(--f-ui); overflow:hidden}
 .app{height:100%; display:grid; grid-template-columns:minmax(0,1fr) 340px}
@@ -269,7 +290,8 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 /* the reason for each link appears when you point at its card; its space is kept so nothing shifts */
 .chip .nt{opacity:0; transition:opacity .18s}
 .chip:hover .nt, .chip:focus-visible .nt, .chip.hot .nt{opacity:1}
-@media (hover:none){.chip .nt{opacity:1}}
+.h-touch{display:none}
+@media (hover:none){.chip .nt{opacity:1} .h-mouse{display:none} .h-touch{display:inline}}
 .subject{box-sizing:border-box; width:100%; max-width:520px; background:var(--disk); border:2.5px solid var(--ink); border-radius:6px; padding:18px 22px 16px; display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; position:relative; z-index:1}
 .lbl-img{pointer-events:none}
 .chip{width:300px!important}
@@ -292,19 +314,36 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .subject button{margin-top:8px; font-size:12px; padding:6px 10px}
 .empty{font-size:13.5px; color:var(--t-faint); margin:0}
 
+/* compact map: small stages (phones, tablets, narrow windows) */
+.compact .edge-callout, .compact .life-callout, .compact .possible-callout{display:none}
+.compact #zin, .compact #zout{display:none}
+.compact #map .dom-sub, .compact #map .tier-tag, .compact #map .phys-title{display:none}
+.compact #map .dl-astro text, .compact #map .dl-math text{transform:translateY(-15px)}
 @media (max-width:820px){
   .chip{width:100%!important}
   .chip .fld{white-space:normal}
   .subject h2{color:var(--t-head); font-size:23px}
   .fwrap{gap:34px}
-  .app{grid-template-columns:1fr; grid-template-rows:minmax(0,62%) minmax(0,38%)}
+  .app{grid-template-columns:1fr; grid-template-rows:minmax(0,64%) minmax(0,36%)}
   .panel{border-left:0; border-top:1px solid var(--rule)}
-  h1{font-size:30px}
-  .toolbar{gap:8px}
-  .seg button{padding:7px 8px; font-size:12px}
+  h1{font-size:34px}
+  .toolbar{left:0; right:0; bottom:0; padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px)); gap:8px 10px; background:var(--bg); border-top:1px solid var(--ink-tint)}
+  .toolbar .time{order:3; flex:1 1 100%}
+  .toolbar .toggles{margin-left:auto}
+  .seg button, .toggles button{padding:6px 9px; font-size:12px}
+  .toggles .icon-btn{display:none}
+  .zoomctl{top:10px; right:10px}
+  .focus{position:fixed; z-index:20}
+  .fbar{position:relative; top:0; left:0; right:0; padding:10px 12px; background:var(--bg); border-bottom:1px solid var(--ink-tint)}
+  .shead{grid-template-columns:72px minmax(0,1fr); gap:14px; justify-content:stretch}
+  .sthumb{width:72px; height:72px}
+  .subject{padding:16px 16px 14px}
+  .subject h2{font-size:22px!important}
 }
 @media (prefers-reduced-motion: reduce){ .node,.edge{transition:none} }
 </style>
+</head>
+<body>
 
 <div class="app">
   <section class="stage" id="stage" aria-label="Knowledge map">
@@ -341,21 +380,6 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
     </svg>
 
 
-    <form class="cpop clock" id="clock" hidden role="dialog" aria-label="Unlock colours">
-      <h3>Colours are locked</h3>
-      <label for="cPass" class="cnote">Enter the password to edit them.</label>
-      <input id="cPass" type="password" autocomplete="off" spellcheck="false">
-      <p class="cerr" id="cErr" hidden>That password isn't right. Try again.</p>
-      <div class="cbtns"><button type="submit">Unlock</button><button type="button" id="cLockCancel">Cancel</button></div>
-    </form>
-    <div class="cpop" id="cpop" hidden role="dialog" aria-label="Edit colours">
-      <h3>Colours</h3>
-      <div id="crows"></div>
-      <div class="cbtns"><button id="cCopy">Copy values</button><button id="cReset">Reset</button><button id="cClose">Done</button></div>
-      <textarea id="cOut" readonly hidden aria-label="Colour values"></textarea>
-      <p class="cnote">Click a swatch or paste a hex code (with or without #). Changes apply to this browser only. Copy the values and send them to Claude to make them permanent.</p>
-    </div>
-
     <div class="focus" id="focus" hidden>
       <div class="fbar">
         <button id="toMap">← Back to map</button>
@@ -385,7 +409,6 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
       </div>
       <div class="toggles">
         <button id="tThread" aria-pressed="true">Date order</button>
-        <button id="cOpen" class="icon-btn" aria-expanded="false" aria-label="Colours (locked)" title="Colours"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.7-.8 1.7-1.6 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.6 1.7-1.6h2A4.6 4.6 0 0 0 21 10.8C21 6.5 17 3 12 3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.5" cy="11" r="1.3" fill="currentColor"/><circle cx="10" cy="7.2" r="1.3" fill="currentColor"/><circle cx="14.5" cy="7.2" r="1.3" fill="currentColor"/><circle cx="17" cy="11" r="1.3" fill="currentColor"/></svg></button>
       </div>
     </div>
   </section>
@@ -394,7 +417,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
       <header class="intro" id="intro">
         <h1><i>Frontier</i> 1905</h1>
         <p id="introText">Special relativity drew on <span class="nIdeas">43</span> ideas from six fields, spanning more than 2,300 years from c.450 BCE to 1905. Click any idea to see what it was built on and what it led to.</p>
-        <p class="hint">Scroll to zoom, drag to move.</p>
+        <p class="hint"><span class="h-mouse">Scroll to zoom, drag to move.</span><span class="h-touch">Pinch to zoom, drag to move. Tap an idea to open it.</span></p>
       </header>
       <div class="card" id="card"></div>
       <div class="legend">
@@ -522,8 +545,9 @@ function animBlobs(now){const t=now/1000;for(const b of BLOBS){const d=blobPath(
   if(!DRIFT&&typeof edgeEls!=='undefined'){DRIFT=NODES.filter(n=>n.beyond).map(n=>{const q=seeded(n.id+'d');
     return {n,bx:n.x,by:n.y,ax:30+q()*25,ay:30+q()*25,wx:.16+q()*.12,wy:.14+q()*.12,px:q()*6.28,py:q()*6.28,
       lines:edgeEls.filter(({e})=>e[0]===n.id||e[1]===n.id).map(({e,l})=>({l,end:e[0]===n.id?1:2}))};});}
-  if(DRIFT)for(const d of DRIFT){const n=d.n;n.x=d.bx+d.ax*Math.sin(t*d.wx+d.px);n.y=d.by+d.ay*Math.sin(t*d.wy+d.py);
-    n.sc.x=n.x;n.sc.y=n.y;n.sc.g.setAttribute('transform',`translate(${n.x} ${n.y}) scale(${cam.u})`);
+  const BK=CM()?1.16:1;
+  if(DRIFT)for(const d of DRIFT){const n=d.n;n.x=d.bx*BK+d.ax*Math.sin(t*d.wx+d.px);n.y=d.by*BK+d.ay*Math.sin(t*d.wy+d.py);
+    n.sc.x=n.x;n.sc.y=n.y;n.sc.g.setAttribute('transform',`translate(${n.x} ${n.y}) scale(${LU()})`);
     for(const {l,end} of d.lines){l.setAttribute('x'+end,n.x);l.setAttribute('y'+end,n.y);}}
   if(!reduce)requestAnimationFrame(animBlobs);}
 const NODES=[
@@ -835,7 +859,7 @@ DOMS.forEach(d=>{
     });
   }else{
     const [x,y]=pos(mid,bumpR(mid)); // sits on the rim, lifted where the swell rises beneath it
-    addLabel(x,y,mid,g=>{
+    addLabel(x,y,mid,g=>{g.classList.add('dl-'+d.id);
       const t=el('text',{class:'dom-lbl','text-anchor':'middle',y:-39},g);t.textContent=d.label||d.name;
       const s=el('text',{class:'tier-tag','text-anchor':'middle',y:-24},g);s.textContent=(d.tier[0].toUpperCase()+d.tier.slice(1));
     });
@@ -851,7 +875,7 @@ PHYS.forEach(d=>{const name=d.name==='Optics and light'?'Optics':d.name,th=(d.a0
   const rr=clearR((PH0+PH1)/2),[x,y]=pos(th,rr);addLabel(x,y,th,g=>{
     const u=el('text',{class:'dom-sub','text-anchor':'middle',y:-34},g);u.textContent=name;});});
 // Physics title sits above the three sections it covers, between their extended boundary lines
-{const th=(PH0+PH1)/2,[x,y]=pos(th,clearR(th));addLabel(x,y,0,g=>{
+{const th=(PH0+PH1)/2,[x,y]=pos(th,clearR(th));addLabel(x,y,0,g=>{g.classList.add('phys-title');
   const s=el('text',{class:'tier-tag','text-anchor':'middle',y:-58},g);s.textContent='Primary';
   const t=el('text',{class:'dom-lbl','text-anchor':'middle',y:-72},g);t.textContent='Physics';});}
 // every wedge boundary continues past the edge of knowledge and fades out
@@ -928,7 +952,7 @@ NODES.forEach(n=>{
   if(n.num){const t=el('text',{class:'num',x:7,y:-7},g);t.textContent=n.num;n.numEl=t;}
   const left=n.side==='L';
   const lg=el('g',{class:'lbl'},g);
-  if(n.id==='sr')lg.setAttribute('transform','translate(7 -13)'); // pinned card sits in the gap below the Mechanics label
+  if(n.id==='sr'){lg.classList.add('sr-lbl');lg.setAttribute('transform','translate(7 -13)');} // pinned card sits in the gap below the Mechanics label
   el('rect',{class:'lbl-bg',rx:3},lg);
   const TH=n.id==='sr'?null:THUMBS[n.id], IMG=TH?41:0; // the pinned special relativity card stays text-only so it clears the field titles // room for the thumbnail beside the text
   if(TH){const im=el('image',{class:'lbl-img',width:32,height:32,preserveAspectRatio:'xMidYMid slice'},lg);im.setAttribute('href',TH);}
@@ -963,8 +987,9 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sizePlates);
 /* ---------- camera ---------- */
 const stage=$('#stage');
 let W=800,H=600, cam={x:0,y:0,u:3};
+const CM=()=>W<760;
 const FRAMES={
-  overview:[-1560,-1620,1420,1170],
+  get overview(){return CM()?[-1200,-1640,1200,1130]:W<1000?[-1800,-1660,1460,1170]:[-1560,-1620,1420,1170];},
   frontier:[-1560,-1500,1010,-60],
   breakthrough:[-300,-1310,460,-790],
 };
@@ -983,11 +1008,12 @@ function flyTo(target,ms=1100){
 function setFrame(name){document.querySelectorAll('[data-frame]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.frame===name));flyTo(fitCam(FRAMES[name]));}
 function clearFrame(){document.querySelectorAll('[data-frame]').forEach(b=>b.setAttribute('aria-pressed','false'));}
 let rimTitles=null;
+function LU(){return cam.u*(CM()?.78:1);}
 function render(){
   const {x,y,u}=cam;
   // field titles around the rim fade out as the circle gets small on screen
   if(!rimTitles)rimTitles=[...gL.querySelectorAll('.dom-lbl')].map(t=>t.parentNode);
-  const rpx=R/u, fade=Math.max(0,Math.min(1,(rpx-170)/(250-170)));
+  const rpx=R/u, fade=CM()?Math.max(0,Math.min(1,(rpx-120)/(160-120))):Math.max(0,Math.min(1,(rpx-170)/(250-170)));
   for(const g of rimTitles){g.style.opacity=fade.toFixed(3);g.style.visibility=fade<.02?'hidden':'';}
   // the Einstein's life dot sits on the Besso circle, so it only shows once you zoom in far enough to tell them apart
   {const d=document.querySelector('.life-dot');if(d)d.style.opacity=Math.max(0,Math.min(1,(rpx-450)/(600-450))).toFixed(3);}
@@ -995,13 +1021,15 @@ function render(){
   {const p=document.getElementById('xhatch'),h=(6*u).toFixed(2);p.setAttribute('width',h);p.setAttribute('height',h);
    p.querySelectorAll('.xh').forEach((l,i)=>{l.setAttribute(i?'x2':'y2',h);l.setAttribute('stroke-width',(.5*u).toFixed(3));});}
   if(typeof placeArrows==='function'&&ARROWS.length)placeArrows();
-  for(const s of scaled)s.g.setAttribute('transform',`translate(${s.x} ${s.y}) scale(${u})`+(s.rot?` rotate(${s.rot})`:''));
+  const lu=LU();
+  {const sl=gL.querySelector('.sr-lbl')||document.querySelector('.sr-lbl');if(sl)sl.setAttribute('transform',CM()?`translate(${(+sl.querySelector('rect').getAttribute('width')||130)/2+5} -44)`:'translate(7 -13)');}
+  for(const s of scaled)s.g.setAttribute('transform',`translate(${s.x} ${s.y}) scale(${lu})`+(s.rot?` rotate(${s.rot})`:''));
   svg.classList.toggle('lod-num',u<4.2);
   svg.classList.toggle('lod-sub',u<1.5);
   svg.classList.toggle('lod-ring',u<4.2);
   svg.classList.toggle('lod-lbl',u<.8);
 }
-new ResizeObserver(()=>{const r=stage.getBoundingClientRect();W=r.width;H=r.height;render();}).observe(stage);
+new ResizeObserver(()=>{const r=stage.getBoundingClientRect();W=r.width;H=r.height;stage.classList.toggle('compact',CM());render();}).observe(stage);
 
 // pan / zoom
 let moved=false;const ptrs=new Map();let last=null;
@@ -1247,70 +1275,6 @@ new ResizeObserver(()=>drawLines()).observe(fscroll);
 window.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!focusEl.hidden)closeFocus();});
 
 
-/* ---------- colour editor ---------- */
-const CGROUPS=[
-  ['Surfaces',[['--bg','Background'],['--disk','Cards, labels, panel']]],
-  ['Fields',[['--w-primary','Primary'],['--w-adjacent','Adjacent'],['--w-remote','Remote'],['--field','Other fields'],['--bump','The push (bump)']]],
-  ['Lines',[['--ink','Outlines and buttons'],['--red','Built on (and accents)'],['--out','Led to'],['--link','Other ideas (circles)'],['--edge','Background links'],['--rule','Faint lines']]],
-  ['Timeline',[['--play','Play button'],['--playhead','Play head'],['--track','Timeline']]],
-  ['Text',[['--t-head','Headings and titles'],['--t-body','Body text'],['--t-meta','Labels and dates'],['--t-faint','Faint text']]]];
-const CTOK=CGROUPS.flatMap(g=>g[1]);
-const OPAC={'--w-primary':'--o-primary','--w-adjacent':'--o-adjacent','--w-remote':'--o-remote'};
-const rootEl=document.documentElement, cpop=$('#cpop');
-let cvals={};
-try{cvals=JSON.parse(localStorage.getItem('f1905-colours')||'{}')||{};}catch(e){cvals={};}
-const hexOf=v=>{v=v.trim();if(/^#[0-9a-f]{6}$/i.test(v))return v;if(/^#[0-9a-f]{3}$/i.test(v))return '#'+v.slice(1).split('').map(c=>c+c).join('');return '#000000';};
-const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)).join(',');
-function applyColours(){
-  for(const ok of Object.values(OPAC)){if(cvals[ok]!=null)rootEl.style.setProperty(ok,cvals[ok]);else rootEl.style.removeProperty(ok);}
-  for(const [k] of CTOK){if(cvals[k])rootEl.style.setProperty(k,cvals[k]);else rootEl.style.removeProperty(k);}
-  // keep the derived shades in step
-  if(cvals['--ink']){rootEl.style.setProperty('--ink-tint',`rgba(${rgb(cvals['--ink'])},.07)`);rootEl.style.setProperty('--ink-soft',`color-mix(in srgb, ${cvals['--ink']} 68%, ${cvals['--disk']||getComputedStyle(rootEl).getPropertyValue('--disk')})`);}
-  else{rootEl.style.removeProperty('--ink-tint');rootEl.style.removeProperty('--ink-soft');}
-  if(cvals['--red'])rootEl.style.setProperty('--red-soft',`rgba(${rgb(cvals['--red'])},.14)`);else rootEl.style.removeProperty('--red-soft');
-  if(cvals['--disk'])rootEl.style.setProperty('--panel',cvals['--disk']);else rootEl.style.removeProperty('--panel');
-  try{localStorage.setItem('f1905-colours',JSON.stringify(cvals));}catch(e){}
-}
-function buildRows(){
-  const cs=getComputedStyle(rootEl);
-  let i=0;
-  $('#crows').innerHTML=CGROUPS.map(([g,toks])=>`<div class="cgroup"><h4>${g}</h4>`+toks.map(([k,lab])=>{i++;const v=cvals[k]||hexOf(cs.getPropertyValue(k));return `<div class="crow"><input type="color" id="c${i}" data-k="${k}" value="${v}" aria-label="${lab} colour picker"><label for="h${i}">${lab}</label><input class="hex" id="h${i}" type="text" value="${v.toUpperCase()}" maxlength="7" spellcheck="false" autocomplete="off" aria-label="${lab} hex code"></div>`+(OPAC[k]?(()=>{const ok=OPAC[k],ov=Math.round(100*(cvals[ok]!=null?+cvals[ok]:+cs.getPropertyValue(ok)));return `<div class="orow"><label for="o${i}">Opacity</label><input type="range" id="o${i}" data-o="${ok}" min="0" max="100" step="5" value="${ov}"><output>${ov}%</output></div>`;})():'');}).join('')+'</div>').join('');
-  $('#crows').querySelectorAll('.orow input').forEach(r=>r.addEventListener('input',()=>{cvals[r.dataset.o]=String(+r.value/100);r.nextElementSibling.textContent=r.value+'%';applyColours();}));
-  $('#crows').querySelectorAll('.crow').forEach(row=>{
-    const pick=row.querySelector('input[type=color]'), hex=row.querySelector('.hex'), k=pick.dataset.k;
-    const parse=v=>{v=v.trim().replace(/^#/,'');if(/^[0-9a-f]{3}$/i.test(v))v=v.split('').map(c=>c+c).join('');return /^[0-9a-f]{6}$/i.test(v)?'#'+v.toLowerCase():null;};
-    const set=v=>{cvals[k]=v;applyColours();};
-    pick.addEventListener('input',()=>{hex.value=pick.value.toUpperCase();hex.classList.remove('bad');set(pick.value);});
-    hex.addEventListener('input',()=>{const v=parse(hex.value);hex.classList.toggle('bad',!v&&hex.value.trim()!=='');if(v){pick.value=v;set(v);}});
-    hex.addEventListener('paste',()=>setTimeout(()=>{const v=parse(hex.value);if(v)hex.value=v.toUpperCase();},0));
-    hex.addEventListener('blur',()=>{hex.value=pick.value.toUpperCase();hex.classList.remove('bad');});
-    hex.addEventListener('keydown',ev=>{if(ev.key==='Enter')hex.blur();});
-  });
-  $('#crows').insertAdjacentHTML('beforeend',`<div class="cgroup"><h4>Content</h4><label class="ccheck" for="cBranch"><input type="checkbox" id="cBranch" ${showBranch?'checked':''}> Show the light-quanta branch (Planck, Lenard, light quanta)</label></div>`);
-  $('#cBranch').addEventListener('change',ev=>{showBranch=ev.target.checked;try{localStorage.setItem('f1905-branch',showBranch?'1':'0');}catch(e){}applyBranch();});
-}
-function cssText(){const cs=getComputedStyle(rootEl);return ':root {\n'+CGROUPS.map(([g,toks])=>`  /* ${g} */\n`+toks.map(([k,lab])=>`  ${k}: ${(cvals[k]||hexOf(cs.getPropertyValue(k))).toUpperCase()};  /* ${lab} */`+(OPAC[k]?`\n  ${OPAC[k]}: ${cvals[OPAC[k]]!=null?cvals[OPAC[k]]:cs.getPropertyValue(OPAC[k]).trim()};  /* ${lab} opacity */`:'')).join('\n')).join('\n')+'\n}';}
-// the colour editor sits behind a light password, to keep casual visitors from changing the look
-const PASS_HASH=(s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return h;});
-const UNLOCK=PASS_HASH('style');
-let unlocked=false;try{unlocked=sessionStorage.getItem('f1905-unlocked')==='1';}catch(e){}
-const clock=$('#clock');
-function openEditor(){cpop.hidden=false;$('#cOpen').setAttribute('aria-expanded','true');buildRows();}
-$('#cOpen').onclick=()=>{
-  if(!cpop.hidden){cpop.hidden=true;$('#cOpen').setAttribute('aria-expanded','false');return;}
-  if(unlocked){openEditor();return;}
-  clock.hidden=!clock.hidden;$('#cErr').hidden=true;$('#cPass').value='';if(!clock.hidden)$('#cPass').focus();};
-clock.addEventListener('submit',ev=>{ev.preventDefault();
-  if(PASS_HASH($('#cPass').value.trim())===UNLOCK){unlocked=true;try{sessionStorage.setItem('f1905-unlocked','1');}catch(e){}clock.hidden=true;openEditor();}
-  else{$('#cErr').hidden=false;$('#cPass').select();}});
-$('#cLockCancel').onclick=()=>{clock.hidden=true;};
-$('#cClose').onclick=()=>{cpop.hidden=true;$('#cOpen').setAttribute('aria-expanded','false');};
-$('#cReset').onclick=()=>{cvals={};applyColours();buildRows();$('#cOut').hidden=true;};
-$('#cCopy').onclick=()=>{const t=cssText();const out=$('#cOut');out.value=t;out.hidden=false;
-  const done=()=>{$('#cCopy').textContent='Copied';setTimeout(()=>$('#cCopy').textContent='Copy values',1600);};
-  try{navigator.clipboard.writeText(t).then(done,()=>{out.focus();out.select();});}catch(e){out.focus();out.select();}};
-applyColours();
-
 /* ---------- connection filter ---------- */
 const SRIN=new Set(IN.get('sr').map(e=>e[0])), SROUT=new Set(OUT.get('sr').map(e=>e[1])), SRANC=anc('sr');
 const nIndirect=[...SRANC].filter(x=>!SRIN.has(x)).length;
@@ -1344,7 +1308,7 @@ document.querySelectorAll('.nNum').forEach(e=>e.textContent=ordered.length);
 requestAnimationFrame(animBlobs);
 /* ---------- light-quanta branch: hidden unless switched on in the colour settings ---------- */
 const BRANCH=new Set(['planck','lenard','photo']);
-let showBranch=false;try{showBranch=localStorage.getItem('f1905-branch')==='1';}catch(e){}
+let showBranch=false;
 function branchVisible(id){return showBranch||!BRANCH.has(id);}
 function applyBranch(){
   NODES.forEach(n=>nodeEls[n.id].classList.toggle('branch-off',!branchVisible(n.id)));
@@ -1360,8 +1324,11 @@ applyBranch();
 /* ---------- start ---------- */
 applyYear(yearOf(1000));
 select(null);
-requestAnimationFrame(()=>{const r=stage.getBoundingClientRect();W=r.width;H=r.height;
+requestAnimationFrame(()=>{const r=stage.getBoundingClientRect();W=r.width;H=r.height;stage.classList.toggle('compact',CM());
   cam=fitCam(FRAMES.overview);render();
 });
 })();
 </script>
+
+</body>
+</html>
