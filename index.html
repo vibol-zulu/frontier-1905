@@ -402,6 +402,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
       <path id="rim"/>
       <path id="thread"/>
       <g id="gEdges"></g>
+      <g id="gBlobs"></g>
       <g id="gLabels"></g>
       <g id="gArrows"></g>
       <g id="gNodes"></g>
@@ -884,7 +885,7 @@ function walk(id,map,idx){const seen=new Set();const st=[id];while(st.length){co
 const anc=id=>walk(id,IN,0), desc=id=>walk(id,OUT,1);
 
 /* ---------- build svg ---------- */
-const svg=$('#map'), gExt=$('#gExt'), gF=$('#gFields'), gW=$('#gWedges'), gR=$('#gRings'), gE=$('#gEdges'), gN=$('#gNodes'), gL=$('#gLabels');
+const svg=$('#map'), gExt=$('#gExt'), gF=$('#gFields'), gW=$('#gWedges'), gR=$('#gRings'), gE=$('#gEdges'), gN=$('#gNodes'), gL=$('#gLabels'), gB=$('#gBlobs'); // ideas after 1905 sit in gBlobs, beneath the titles
 const scaled=[]; // {g,x,y,rot}
 function wedgePath(a0,a1,r){const [x0,y0]=pos(a0,r),[x1,y1]=pos(a1,r);return `M0,0L${x0},${y0}A${r},${r} 0 ${a1-a0>180?1:0} 1 ${x1},${y1}Z`;}
 function addLabel(x,y,rot,build){const g=el('g',null,gL);build(g);scaled.push({g,x,y,rot});return g;}
@@ -1003,7 +1004,7 @@ const edgeEls=EDGES.map(e=>{const a=BY[e[0]],b=BY[e[1]];
 // nodes
 const nodeEls={};
 NODES.forEach(n=>{
-  const g=el('g',{class:'node'+(n.id==='sr'?' sr always':'')+(n.beyond?' beyond':''),tabindex:0,role:'button','aria-label':`${n.when}, ${n.who}: ${n.title}`},gN);
+  const g=el('g',{class:'node'+(n.id==='sr'?' sr always':'')+(n.beyond?' beyond':''),tabindex:0,role:'button','aria-label':`${n.when}, ${n.who}: ${n.title}`},n.beyond?gB:gN);
   const rnd=seeded(n.id), br=n.beyond?13+rnd()*9:0;
   const s=n.beyond?br+3:5;
   el('circle',{class:'hit',r:n.beyond?br+4:14},g);
@@ -1028,7 +1029,7 @@ NODES.forEach(n=>{
 });
 
 // bring an idea forward, but never above special relativity: its pinned label always sits on top of the drifting blobs
-function raise(g){const top=nodeEls.sr;if(g===top){if(gN.lastChild!==top)gN.appendChild(top);return;}
+function raise(g){if(g.parentNode===gB){if(gB.lastChild!==g)gB.appendChild(g);return;}const top=nodeEls.sr;if(g===top){if(gN.lastChild!==top)gN.appendChild(top);return;}
   if(gN.lastChild!==top)gN.appendChild(top);if(g.nextSibling!==top)gN.insertBefore(g,top);}
 raise(nodeEls.sr);
 
@@ -1116,9 +1117,10 @@ window.addEventListener('pointerup',up);window.addEventListener('pointercancel',
 $('#zin').onclick=()=>zoomAt(W/2,H/2,1/1.5);
 $('#zout').onclick=()=>zoomAt(W/2,H/2,1.5);
 $('#zfit').onclick=()=>setFrame('overview');
-gN.addEventListener('focusin',ev=>{const g=ev.target.closest&&ev.target.closest('.node');if(!g||ptrs.size)return;
+const onNodeFocus=ev=>{const g=ev.target.closest&&ev.target.closest('.node');if(!g||ptrs.size)return;
   const n=NODES.find(m=>nodeEls[m.id]===g);if(!n)return;const sx=(n.x-cam.x)/cam.u+W/2,sy=(n.y-cam.y)/cam.u+H/2,pad=80;
-  if(sx<pad||sx>W-pad||sy<pad||sy>H-insets().b-pad){clearFrame();flyTo({x:n.x,y:n.y,u:cam.u},500);}});
+  if(sx<pad||sx>W-pad||sy<pad||sy>H-insets().b-pad){clearFrame();flyTo({x:n.x,y:n.y,u:cam.u},500);}};
+gN.addEventListener('focusin',onNodeFocus);gB.addEventListener('focusin',onNodeFocus);
 stage.addEventListener('keydown',ev=>{if(!focusEl.hidden||ev.target.closest('.toolbar,.zoomctl'))return;const k=ev.key,st=60*cam.u;
   const pan={ArrowLeft:[-st,0],ArrowRight:[st,0],ArrowUp:[0,-st],ArrowDown:[0,st]}[k];
   if(pan&&!ev.target.closest('.node')){ev.preventDefault();cam.x+=pan[0];cam.y+=pan[1];clearFrame();render();}
