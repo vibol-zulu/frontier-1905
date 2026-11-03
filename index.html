@@ -1022,10 +1022,15 @@ NODES.forEach(n=>{
   const t2=el('text',{class:'s',x:left?-(s+14):(s+14+IMG),y:n.num?33:20,'text-anchor':left?'end':'start'},lg);t2.textContent=n.when;
   g.addEventListener('click',()=>{if(!moved)openFocus(n.id,true);});
   g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openFocus(n.id,true);}});
-  g.addEventListener('pointerenter',ev=>{if(gN.lastChild!==g&&!ptrs.size)gN.appendChild(g);if(ev.pointerType==='mouse'){svg.classList.add('hovering');focus(n.id);}});
+  g.addEventListener('pointerenter',ev=>{if(!ptrs.size)raise(g);if(ev.pointerType==='mouse'){svg.classList.add('hovering');focus(n.id);}});
   g.addEventListener('pointerleave',ev=>{if(ev.pointerType==='mouse'){svg.classList.remove('hovering');focus(selected);}});
   nodeEls[n.id]=g;n.sc={g,x:n.x,y:n.y,rot:0};scaled.push(n.sc);
 });
+
+// bring an idea forward, but never above special relativity: its pinned label always sits on top of the drifting blobs
+function raise(g){const top=nodeEls.sr;if(g===top){if(gN.lastChild!==top)gN.appendChild(top);return;}
+  if(gN.lastChild!==top)gN.appendChild(top);if(g.nextSibling!==top)gN.insertBefore(g,top);}
+raise(nodeEls.sr);
 
 /* solid plates behind node labels so lines never cross the text */
 function sizePlates(){
@@ -1161,7 +1166,7 @@ function showLatest(y){
   let n=null;for(const m of NODES)if(m.year<=y&&(!n||m.year>n.year))n=m;
   const id=n&&n.id;if(id===latestShown)return;
   if(latestShown)nodeEls[latestShown].classList.remove('just');
-  latestShown=id;if(id){const g=nodeEls[id];g.classList.add('just');if(gN.lastChild!==g)gN.appendChild(g);}
+  latestShown=id;if(id){const g=nodeEls[id];g.classList.add('just');raise(g);}
 }
 function clearLatest(){if(latestShown)nodeEls[latestShown].classList.remove('just');latestShown=null;}
 function stopPlay(){clearLatest();if(playing){cancelAnimationFrame(playing);playing=null;$('#play').textContent='▶';$('#play').setAttribute('aria-label','Play the timeline');}}
@@ -1221,7 +1226,7 @@ function select(id){
   NODES.forEach(m=>nodeEls[m.id].classList.toggle('sel',m.id===id));
   if(!id){focus(null);$('#card').hidden=true;return;}
   const n=BY[id];
-  if(gN.lastChild!==nodeEls[id])gN.appendChild(nodeEls[id]);
+  raise(nodeEls[id]);
   focus(id);
   const d=DOM[n.d];
   let h=`<div class="eyebrow">${n.num?`No. ${n.num} · `:''}${esc(domName(n))} · ${esc(d.tier)}</div>
