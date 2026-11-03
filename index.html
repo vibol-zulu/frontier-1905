@@ -1008,7 +1008,7 @@ NODES.forEach(n=>{
   const s=n.beyond?br+3:5;
   el('circle',{class:'hit',r:n.beyond?br+4:14},g);
   if(n.beyond){const bl=el('path',{class:'blob'},g);const bh=el('path',{class:'blob-h'},g);
-    BLOBS.push({el:bl,hatch:bh,r:br,ph:rnd()*6.28,sp:.25+rnd()*.35,N:6+Math.floor(rnd()*4),a1:.1+rnd()*.14,a2:.05+rnd()*.12,f1:2+Math.floor(rnd()*2),f2:3+Math.floor(rnd()*2),sx:.8+rnd()*.4});}
+    BLOBS.push({el:bl,hatch:bh,r:br,ph:rnd()*6.28,sp:.25+rnd()*.35,N:6+Math.floor(rnd()*4),a1:.06+rnd()*.04,a2:.03+rnd()*.03,f1:2+Math.floor(rnd()*2),f2:3+Math.floor(rnd()*2),sx:.92+rnd()*.16}); /* imperfect circles: a gentle wobble, nearly round */}
   el('circle',{class:'halo',r:s+5},g);
   el('circle',{class:'dot',r:s},g);
   if(n.num){const t=el('text',{class:'num',x:7,y:-7},g);t.textContent=n.num;n.numEl=t;}
