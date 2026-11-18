@@ -130,14 +130,14 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 /* in the Indirect view the paths are neutral grey, so pink keeps meaning 'built on' for the hovered idea */
 #map.v-indirect .edge.chain:not(.in):not(.out){stroke:var(--edge); stroke-width:1.1; opacity:.85}
 #map .edge.chainout:not(.in):not(.out){stroke:var(--out); stroke-width:.8; opacity:1}
-#map .node.indir:not(.lit) .dot{stroke:var(--red); stroke-width:2.2}
-#map .node.outx:not(.lit) .dot{stroke:var(--out); stroke-width:2.2}
+#map .node.indir:not(.lit) .dot{stroke:var(--red); stroke-width:1.7}
+#map .node.outx:not(.lit) .dot{stroke:var(--out); stroke-width:1.7}
 #map.v-indirect .node.stone .dot{stroke:var(--link); stroke-width:1.5}
 .node{cursor:pointer; transition:opacity .35s}
 .node.off{opacity:0; pointer-events:none}
 /* circle groups: selected (filled), built on (accent ring), led to (led-to ring), everything else (thin neutral ring) */
 .focusing .node:not(.lit) .dot{stroke:var(--link); stroke-width:1.3}
-.node.lit .dot{stroke:var(--red); stroke-width:2.4}
+.node.lit .dot{stroke:var(--red); stroke-width:1.9}
 .node.out-n .dot{stroke:var(--out)}
 .node .hit{fill:transparent}
 .node .dot{fill:var(--disk); stroke:var(--link); stroke-width:1.3}
@@ -160,7 +160,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .lod-num.show-thread .num{display:block}
 .node.just .lbl{display:block; animation:lblIn .25s ease-out}
 @keyframes lblIn{from{opacity:0}to{opacity:1}}
-.node.just .dot{stroke:var(--red); stroke-width:2.2}
+.node.just .dot{stroke:var(--red); stroke-width:1.7}
 .lod-lbl .lbl, .node.sel .lbl, .node:hover .lbl, .node:focus-visible .lbl, .node.always .lbl{display:block}
 .hovering .node.sel:not(:hover) .lbl{display:none}
 .dom-lbl{font-family:var(--f-display)!important; font-size:11.5px; fill:var(--t-head)}
