@@ -149,8 +149,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 /* plain fallbacks first, for browsers without color-mix */
 .blob{fill:var(--bg); stroke:var(--hatch); stroke-width:1.1; stroke-dasharray:3 3; vector-effect:non-scaling-stroke}
 .node.beyond:hover .blob, .node.beyond.sel .blob{stroke-width:2}
-.node.beyond.lit .blob{stroke:var(--red); stroke-width:1.8}
-.node.beyond.out-n .blob{stroke:var(--out)}
+/* blobs keep their grey outline when highlighted */
 .num{font-family:var(--f-mono)!important; font-size:10px; fill:var(--t-meta); display:none}
 .lbl{display:none}
 .lbl .t{font-family:var(--f-display)!important; font-size:12.5px; fill:var(--t-head)}
