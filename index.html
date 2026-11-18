@@ -107,8 +107,10 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .edge-callout.hid{opacity:0; transition:none}
 .node.beyond.arriving{transition:opacity 2.6s cubic-bezier(.4,0,.2,1) 1.2s}
 .node.beyond.off{transition:none}
-/* lines to or between the ideas after 1905 are not drawn; the focused view still lists them */
+/* lines to or between the ideas after 1905 are hidden; the focused view still lists them */
 #map .edge.beyondLink{display:none}
+/* ...except while one of those ideas is hovered: then its own links show */
+#map.hover-beyond .edge.beyondLink.in, #map.hover-beyond .edge.beyondLink.out{display:inline}
 #map .edge.toBeyond.arriving{transition:opacity 2.6s cubic-bezier(.4,0,.2,1) 1.2s}
 #map .edge.toBeyond.off{transition:none}
 #map .edge.toBeyond:not(.in):not(.out):not(.chain):not(.chainout){opacity:.09}
@@ -1024,8 +1026,8 @@ NODES.forEach(n=>{
   const t2=el('text',{class:'s',x:left?-(s+14):(s+14+IMG),y:n.num?33:20,'text-anchor':left?'end':'start'},lg);t2.textContent=n.when;
   g.addEventListener('click',()=>{if(!moved)openFocus(n.id,true);});
   g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openFocus(n.id,true);}});
-  g.addEventListener('pointerenter',ev=>{if(!ptrs.size)raise(g);if(ev.pointerType==='mouse'){svg.classList.add('hovering');focus(n.id);}});
-  g.addEventListener('pointerleave',ev=>{if(ev.pointerType==='mouse'){svg.classList.remove('hovering');focus(selected);}});
+  g.addEventListener('pointerenter',ev=>{if(!ptrs.size)raise(g);if(ev.pointerType==='mouse'){svg.classList.add('hovering');svg.classList.toggle('hover-beyond',!!n.beyond);focus(n.id);}});
+  g.addEventListener('pointerleave',ev=>{if(ev.pointerType==='mouse'){svg.classList.remove('hovering','hover-beyond');focus(selected);}});
   nodeEls[n.id]=g;n.sc={g,x:n.x,y:n.y,rot:0};scaled.push(n.sc);
 });
 
@@ -1215,7 +1217,7 @@ function focus(id){
   edgeEls.forEach(({e,l})=>{l.classList.toggle('in',e[1]===id);l.classList.toggle('out',e[0]===id);});
   edgeEls.forEach(({e,l})=>{if(e[0]===id||e[1]===id)gE.appendChild(l);});
   // a small arrowhead at the middle of each highlighted line, pointing away from the hovered idea: back to what it was built on, out to what it led to
-  edgeEls.forEach(({e,l})=>{if(e[0]!==id&&e[1]!==id||l.classList.contains('beyondLink')||l.classList.contains('filt')||l.classList.contains('off')||l.classList.contains('branch-off'))return;
+  edgeEls.forEach(({e,l})=>{if(e[0]!==id&&e[1]!==id||(l.classList.contains('beyondLink')&&!(BY[id].beyond&&svg.classList.contains('hover-beyond')))||l.classList.contains('filt')||l.classList.contains('off')||l.classList.contains('branch-off'))return;
     const a=BY[e[0]],b=BY[e[1]],mx=(a.x+b.x)/2,my=(a.y+b.y)/2,rot=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
     const g=el('g',{class:'arrow '+(e[1]===id?'in':'out')},gArrows);el('path',{d:'M-4.5,-4.2 L5,0 L-4.5,4.2 Z'},g);
     ARROWS.push({g,x:mx,y:my,rot:e[1]===id?rot+180:rot});});
