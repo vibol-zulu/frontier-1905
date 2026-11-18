@@ -1359,7 +1359,9 @@ const CTOK=CGROUPS.flatMap(g=>g[1]);
 const OPAC={'--w-primary':'--o-primary','--w-adjacent':'--o-adjacent','--w-remote':'--o-remote'};
 const rootEl=document.documentElement, cpop=$('#cpop');
 let cvals={};
-try{cvals=JSON.parse(localStorage.getItem('f1905-colours')||'{}')||{};}catch(e){cvals={};}
+// colours saved in this browser before the palette moved to brand green are dropped, so old overrides (such as the earlier blue) can't come back
+try{localStorage.removeItem('f1905-colours');}catch(e){}
+try{cvals=JSON.parse(localStorage.getItem('f1905-colours-v2')||'{}')||{};}catch(e){cvals={};}
 const hexOf=v=>{v=v.trim();if(/^#[0-9a-f]{6}$/i.test(v))return v;if(/^#[0-9a-f]{3}$/i.test(v))return '#'+v.slice(1).split('').map(c=>c+c).join('');return '#000000';};
 const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)).join(',');
 function applyColours(){
@@ -1370,7 +1372,7 @@ function applyColours(){
   else{rootEl.style.removeProperty('--ink-tint');rootEl.style.removeProperty('--ink-soft');}
   if(cvals['--red'])rootEl.style.setProperty('--red-soft',`rgba(${rgb(cvals['--red'])},.14)`);else rootEl.style.removeProperty('--red-soft');
   if(cvals['--disk'])rootEl.style.setProperty('--panel',cvals['--disk']);else rootEl.style.removeProperty('--panel');
-  try{localStorage.setItem('f1905-colours',JSON.stringify(cvals));}catch(e){}
+  try{localStorage.setItem('f1905-colours-v2',JSON.stringify(cvals));}catch(e){}
 }
 function buildRows(){
   const cs=getComputedStyle(rootEl);
