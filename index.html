@@ -107,7 +107,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .edge-callout.hid{opacity:0; transition:none}
 .node.beyond.arriving{transition:opacity 2.6s cubic-bezier(.4,0,.2,1) 1.2s}
 .node.beyond.off{transition:none}
-/* only special relativity links out to the ideas after 1905; other lines to or between them are not drawn (the focused view still lists them) */
+/* lines to or between the ideas after 1905 are not drawn; the focused view still lists them */
 #map .edge.beyondLink{display:none}
 #map .edge.toBeyond.arriving{transition:opacity 2.6s cubic-bezier(.4,0,.2,1) 1.2s}
 #map .edge.toBeyond.off{transition:none}
@@ -1000,7 +1000,7 @@ function bumpD(amp){let d='';for(let t=-50;t<=54;t+=.5){const r=R*(1+BUMP(t,amp)
 
 // edges
 const edgeEls=EDGES.map(e=>{const a=BY[e[0]],b=BY[e[1]];
-  const cls=['edge'];if(e[3])cls.push('debated');if(b.beyond)cls.push('toBeyond');if((a.beyond||b.beyond)&&a.id!=='sr'&&b.id!=='sr')cls.push('beyondLink');
+  const cls=['edge'];if(e[3])cls.push('debated');if(b.beyond)cls.push('toBeyond');if(a.beyond||b.beyond)cls.push('beyondLink');
   const l=el('line',{class:cls.join(' '),x1:a.x,y1:a.y,x2:b.x,y2:b.y},gE);return {e,l};});
 
 // nodes
