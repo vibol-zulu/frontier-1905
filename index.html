@@ -110,7 +110,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 /* lines to or between the ideas after 1905 are hidden; the focused view still lists them */
 #map .edge.beyondLink{display:none}
 /* ...except while one of those ideas is hovered: then its own links show */
-#map.hover-beyond .edge.beyondLink.in, #map.hover-beyond .edge.beyondLink.out{display:inline}
+#map.hover-beyond .edge.beyondLink.in:not(.filt):not(.off):not(.branch-off), #map.hover-beyond .edge.beyondLink.out:not(.filt):not(.off):not(.branch-off){display:inline}
 #map .edge.toBeyond.arriving{transition:opacity 2.6s cubic-bezier(.4,0,.2,1) 1.2s}
 #map .edge.toBeyond.off{transition:none}
 #map .edge.toBeyond:not(.in):not(.out):not(.chain):not(.chainout){opacity:.09}
