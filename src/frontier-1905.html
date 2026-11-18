@@ -9,7 +9,7 @@
   --bg:#FFFFFA; --disk:#FCFBF2; --panel:#FCFBF2; --field:#FCFBF2;
   --w-primary:#FFE5DD; --w-adjacent:#FFE5DD; --w-remote:#FFE5DD; --o-primary:1; --o-adjacent:.5; --o-remote:.2; --bump:#FFE5DD; --hatch:#CCCCC6;
   --ink:#00564A; --ink-soft:#518B80; --ink-tint:rgba(0,86,74,.07); --graphite:#00564A; --muted:#00564A;
-  --red:#FF5B8C; --red-soft:rgba(255,91,140,.14); --out:#5BD6FF; --link:#00564A; --edge:#8A8A8A; --rule:#00564A;
+  --red:#00564A; --red-soft:rgba(0,86,74,.14); --out:#5BD6FF; --link:#00564A; --edge:#8A8A8A; --rule:#00564A;
   --play:#00564A; --playhead:#00564A; --track:#00564A;
   --t-head:#00564A; --t-body:#00564A; --t-meta:#00564A; --t-faint:#00564A;
   --f-display:"Libre Caslon Text", "Times New Roman", Georgia, serif;
@@ -82,6 +82,8 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .edge-callout.hid{opacity:0; transition:none}
 .node.beyond.arriving{transition:opacity 2.6s cubic-bezier(.4,0,.2,1) 1.2s}
 .node.beyond.off{transition:none}
+/* lines to or between the ideas after 1905 are not drawn; the focused view still lists them */
+#map .edge.beyondLink{display:none}
 #map .edge.toBeyond.arriving{transition:opacity 2.6s cubic-bezier(.4,0,.2,1) 1.2s}
 #map .edge.toBeyond.off{transition:none}
 #map .edge.toBeyond:not(.in):not(.out):not(.chain):not(.chainout){opacity:.09}
@@ -416,9 +418,9 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 
     <div class="toolbar" id="toolbar">
       <div class="seg" role="group" aria-label="Which connections to special relativity to show">
-        <button data-view="direct" aria-pressed="false">Direct</button>
+        <button data-view="direct" aria-pressed="true">Direct</button>
         <button data-view="indirect" aria-pressed="false">Indirect</button>
-        <button data-view="all" aria-pressed="true">All</button>
+        <button data-view="all" aria-pressed="false">All</button>
       </div>
       <div class="time">
         <button id="play" aria-label="Play the timeline">▶</button>
@@ -987,7 +989,7 @@ function bumpD(amp){let d='';for(let t=-50;t<=54;t+=.5){const r=R*(1+BUMP(t,amp)
 
 // edges
 const edgeEls=EDGES.map(e=>{const a=BY[e[0]],b=BY[e[1]];
-  const cls=['edge'];if(e[3])cls.push('debated');if(b.beyond)cls.push('toBeyond');
+  const cls=['edge'];if(e[3])cls.push('debated');if(b.beyond)cls.push('toBeyond');if(a.beyond||b.beyond)cls.push('beyondLink');
   const l=el('line',{class:cls.join(' '),x1:a.x,y1:a.y,x2:b.x,y2:b.y},gE);return {e,l};});
 
 // nodes
@@ -1203,7 +1205,7 @@ function focus(id){
   edgeEls.forEach(({e,l})=>{l.classList.toggle('in',e[1]===id);l.classList.toggle('out',e[0]===id);});
   edgeEls.forEach(({e,l})=>{if(e[0]===id||e[1]===id)gE.appendChild(l);});
   // a small arrowhead at the middle of each highlighted line, pointing away from the hovered idea: back to what it was built on, out to what it led to
-  edgeEls.forEach(({e,l})=>{if(e[0]!==id&&e[1]!==id||l.classList.contains('filt')||l.classList.contains('off')||l.classList.contains('branch-off'))return;
+  edgeEls.forEach(({e,l})=>{if(e[0]!==id&&e[1]!==id||l.classList.contains('beyondLink')||l.classList.contains('filt')||l.classList.contains('off')||l.classList.contains('branch-off'))return;
     const a=BY[e[0]],b=BY[e[1]],mx=(a.x+b.x)/2,my=(a.y+b.y)/2,rot=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
     const g=el('g',{class:'arrow '+(e[1]===id?'in':'out')},gArrows);el('path',{d:'M-4.5,-4.2 L5,0 L-4.5,4.2 Z'},g);
     ARROWS.push({g,x:mx,y:my,rot:e[1]===id?rot+180:rot});});
@@ -1437,7 +1439,7 @@ function applyView(v){
   if(selected&&nodeEls[selected].classList.contains('filt'))select(null);
 }
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>applyView(b.dataset.view));
-applyView('all');
+applyView('direct');
 document.querySelectorAll('.nIdeas').forEach(e=>e.textContent=SRANC.size);
 document.querySelectorAll('.nNum').forEach(e=>e.textContent=ordered.length);
 function buildList(){$('#ideaList').innerHTML=[...ordered,...NODES.filter(n=>n.beyond).sort((a,b)=>a.year-b.year)].filter(n=>branchVisible(n.id)).map(n=>
