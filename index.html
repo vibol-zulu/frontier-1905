@@ -156,6 +156,7 @@ button:focus-visible, input:focus-visible, .node:focus-visible{outline:2px solid
 .lbl{display:none}
 .lbl .t{font-family:var(--f-display)!important; font-size:12.5px; fill:var(--t-head)}
 .lbl .s{font-family:var(--f-mono)!important; font-size:9.5px; fill:var(--t-meta)}
+.node.sr .lbl .t{font-size:15.5px} .node.sr .lbl .s{font-size:10.5px}
 .lbl-bg{fill:var(--disk); opacity:1; stroke:var(--rule); stroke-width:.75}
 .sub-lbl, .rim-lbl{paint-order:stroke; stroke:var(--disk); stroke-width:3.5px; stroke-linejoin:round}
 .lod-num.show-thread .num{display:block}
@@ -939,11 +940,11 @@ const PHYS=DOMS.filter(d=>d.group), PH0=Math.min(...PHYS.map(d=>d.a0)), PH1=Math
 PHYS.forEach(d=>{const name=d.name==='Optics and light'?'Optics':d.name,th=(d.a0+d.a1)/2;
   // all three sit on one arc at Optics' distance, each centred on its wedge and angled to follow the circle
   const rr=clearR((PH0+PH1)/2),[x,y]=pos(th,rr);addLabel(x,y,th,g=>{
-    const u=el('text',{class:'dom-sub','text-anchor':'middle',y:-34},g);u.textContent=name;});});
+    const u=el('text',{class:'dom-sub','text-anchor':'middle',y:-60},g);u.textContent=name;});});
 // Physics title sits above the three sections it covers, between their extended boundary lines
 {const th=(PH0+PH1)/2,[x,y]=pos(th,clearR(th));addLabel(x,y,0,g=>{g.classList.add('phys-title');
-  const s=el('text',{class:'tier-tag','text-anchor':'middle',y:-58},g);s.textContent='Primary';
-  const t=el('text',{class:'dom-lbl','text-anchor':'middle',y:-72},g);t.textContent='Physics';});}
+  const s=el('text',{class:'tier-tag','text-anchor':'middle',y:-82},g);s.textContent='Primary';
+  const t=el('text',{class:'dom-lbl','text-anchor':'middle',y:-96},g);t.textContent='Physics';});}
 // every wedge boundary continues past the edge of knowledge and fades out
 const BUMPLINES=[];
 {const defs=svg.querySelector('defs');const edges=new Set();
@@ -1018,12 +1019,12 @@ NODES.forEach(n=>{
   if(n.num){const t=el('text',{class:'num',x:7,y:-7},g);t.textContent=n.num;n.numEl=t;}
   const left=n.side==='L';
   const lg=el('g',{class:'lbl'},g);
-  if(n.id==='sr'){lg.classList.add('sr-lbl');lg.setAttribute('transform','translate(7 -13)');} // pinned card sits in the gap below the Mechanics label
+  if(n.id==='sr'){lg.classList.add('sr-lbl');lg.setAttribute('transform','translate(7 -40)');} // pinned card sits in the gap below the Mechanics label
   el('rect',{class:'lbl-bg',rx:3},lg);
   const TH=n.id==='sr'?null:THUMBS[n.id], IMG=TH?41:0; // the pinned special relativity card stays text-only so it clears the field titles // room for the thumbnail beside the text
   if(TH){const im=el('image',{class:'lbl-img',width:32,height:32,preserveAspectRatio:'xMidYMid slice'},lg);im.setAttribute('href',TH);}
-  const t1=el('text',{class:'t',x:left?-(s+14):(s+14+IMG),y:n.num?17:4,'text-anchor':left?'end':'start'},lg);t1.textContent=n.t;
-  const t2=el('text',{class:'s',x:left?-(s+14):(s+14+IMG),y:n.num?33:20,'text-anchor':left?'end':'start'},lg);t2.textContent=n.when;
+  const t1=el('text',{class:'t',x:left?-(s+14):(s+14+IMG),y:n.id==='sr'?18:n.num?17:4,'text-anchor':left?'end':'start'},lg);t1.textContent=n.t;
+  const t2=el('text',{class:'s',x:left?-(s+14):(s+14+IMG),y:n.id==='sr'?35:n.num?33:20,'text-anchor':left?'end':'start'},lg);t2.textContent=n.when;
   g.addEventListener('click',()=>{if(!moved)openFocus(n.id,true);});
   g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openFocus(n.id,true);}});
   g.addEventListener('pointerenter',ev=>{if(!ptrs.size)raise(g);if(ev.pointerType==='mouse'){svg.classList.add('hovering');svg.classList.toggle('hover-beyond',!!n.beyond);focus(n.id);}});
@@ -1043,13 +1044,14 @@ function sizePlates(){
   const disp=cs.getPropertyValue('--f-display'), mono=cs.getPropertyValue('--f-mono');
   NODES.forEach(n=>{
     const lg=nodeEls[n.id].querySelector('.lbl');const [t1,t2]=lg.querySelectorAll('text');const r=lg.querySelector('rect');
-    ctx.font=`12.5px ${disp}`;const w1=ctx.measureText(n.t).width;ctx.font=`9.5px ${mono}`;const w2=ctx.measureText(n.when).width;
+    const big=n.id==='sr',F1=big?15.5:12.5,F2=big?10.5:9.5; // special relativity's pinned label is set larger
+    ctx.font=`${F1}px ${disp}`;const w1=ctx.measureText(n.t).width;ctx.font=`${F2}px ${mono}`;const w2=ctx.measureText(n.when).width;
     const im=lg.querySelector('image'), IMG=im?41:0;
     const P=9, w=Math.max(w1,w2)+2*P+IMG, x=+t1.getAttribute('x'), y1=+t1.getAttribute('y'), y2=+t2.getAttribute('y');
     const left=t1.getAttribute('text-anchor')==='end';
     const x0=left?x-w+P:x-P-IMG;
     if(im){im.setAttribute('x',x0+P-2);im.setAttribute('y',y1-12.5);}
-    r.setAttribute('x',x0);r.setAttribute('y',y1-17);r.setAttribute('width',w);r.setAttribute('height',y2-y1+25);r.setAttribute('rx',4);
+    r.setAttribute('x',x0);r.setAttribute('y',y1-F1-4.5);r.setAttribute('width',w);r.setAttribute('height',y2-y1+F1+12.5);r.setAttribute('rx',4);
   });
 }
 sizePlates();
@@ -1093,7 +1095,7 @@ function render(){
    p.querySelectorAll('.xh').forEach((l,i)=>{l.setAttribute(i?'x2':'y2',h);l.setAttribute('stroke-width',(.5*u).toFixed(3));});}
   if(typeof placeArrows==='function'&&ARROWS.length)placeArrows();
   const lu=LU();
-  {const sl=gL.querySelector('.sr-lbl')||document.querySelector('.sr-lbl');if(sl)sl.setAttribute('transform',CM()?`translate(${(+sl.querySelector('rect').getAttribute('width')||130)/2+5} -44)`:'translate(7 -13)');}
+  {const sl=gL.querySelector('.sr-lbl')||document.querySelector('.sr-lbl');if(sl)sl.setAttribute('transform',CM()?`translate(${(+sl.querySelector('rect').getAttribute('width')||130)/2+5} -44)`:'translate(7 -40)');}
   for(const s of scaled)s.g.setAttribute('transform',`translate(${s.x} ${s.y}) scale(${lu})`+(s.rot?` rotate(${s.rot})`:''));
   svg.classList.toggle('lod-num',u<4.2);
   svg.classList.toggle('lod-sub',u<1.5);
