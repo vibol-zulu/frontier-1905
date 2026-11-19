@@ -925,8 +925,9 @@ DOMS.forEach(d=>{
       im.setAttribute('href',PORTRAIT);
     });
   }else{
-    const [x,y]=pos(mid,bumpR(mid)); // sits on the rim, lifted where the swell rises beneath it
-    addLabel(x,y,mid,g=>{g.classList.add('dl-'+d.id);
+    const lm=d.id==='astro'?mid-3.5:d.id==='phil'?mid-4:mid; // Astronomy and Philosophy lean left so the special relativity label beside them stays clear
+    const [x,y]=pos(lm,bumpR(lm)); // sits on the rim, lifted where the swell rises beneath it
+    addLabel(x,y,lm,g=>{g.classList.add('dl-'+d.id);
       const t=el('text',{class:'dom-lbl','text-anchor':'middle',y:-39},g);t.textContent=d.label||d.name;
       const s=el('text',{class:'tier-tag','text-anchor':'middle',y:-24},g);s.textContent=(d.tier[0].toUpperCase()+d.tier.slice(1));
     });
@@ -1019,7 +1020,7 @@ NODES.forEach(n=>{
   if(n.num){const t=el('text',{class:'num',x:7,y:-7},g);t.textContent=n.num;n.numEl=t;}
   const left=n.side==='L';
   const lg=el('g',{class:'lbl'},g);
-  if(n.id==='sr'){lg.classList.add('sr-lbl');lg.setAttribute('transform','translate(7 -40)');} // pinned card sits in the gap below the Mechanics label
+  if(n.id==='sr'){lg.classList.add('sr-lbl');lg.setAttribute('transform','translate(1 -20.5)');} // pinned card sits in the gap below the Mechanics label
   el('rect',{class:'lbl-bg',rx:3},lg);
   const TH=n.id==='sr'?null:THUMBS[n.id], IMG=TH?41:0; // the pinned special relativity card stays text-only so it clears the field titles // room for the thumbnail beside the text
   if(TH){const im=el('image',{class:'lbl-img',width:32,height:32,preserveAspectRatio:'xMidYMid slice'},lg);im.setAttribute('href',TH);}
@@ -1095,7 +1096,7 @@ function render(){
    p.querySelectorAll('.xh').forEach((l,i)=>{l.setAttribute(i?'x2':'y2',h);l.setAttribute('stroke-width',(.5*u).toFixed(3));});}
   if(typeof placeArrows==='function'&&ARROWS.length)placeArrows();
   const lu=LU();
-  {const sl=gL.querySelector('.sr-lbl')||document.querySelector('.sr-lbl');if(sl)sl.setAttribute('transform',CM()?`translate(${(+sl.querySelector('rect').getAttribute('width')||130)/2+5} -44)`:'translate(7 -40)');}
+  {const sl=gL.querySelector('.sr-lbl')||document.querySelector('.sr-lbl');if(sl)sl.setAttribute('transform',CM()?`translate(${(+sl.querySelector('rect').getAttribute('width')||130)/2+5} -44)`:'translate(1 -20.5)');}
   for(const s of scaled)s.g.setAttribute('transform',`translate(${s.x} ${s.y}) scale(${lu})`+(s.rot?` rotate(${s.rot})`:''));
   svg.classList.toggle('lod-num',u<4.2);
   svg.classList.toggle('lod-sub',u<1.5);
