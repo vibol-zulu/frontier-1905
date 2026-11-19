@@ -918,7 +918,7 @@ DOMS.forEach(d=>{
       const t=el('text',{class:'dom-lbl','text-anchor':'end',x:tx,y:(ey+1).toFixed(1)},g);t.textContent=d.label||d.name;
       const s=el('text',{class:'tier-tag','text-anchor':'end',x:tx,y:(ey+15).toFixed(1)},g);s.textContent=(d.tier[0].toUpperCase()+d.tier.slice(1));
       // portrait above the title, right edge aligned with the text
-      const PW=56,PH=73,px=ex-28-PW,py=ey-15-PH-6;
+      const PW=80,PH=104,px=ex-28-PW,py=ey-15-PH-6;
       el('rect',{class:'portrait-frame',x:px-3,y:py-3,width:PW+6,height:PH+6,rx:2},g);
       const im=el('image',{x:px,y:py,width:PW,height:PH,preserveAspectRatio:'xMidYMid slice'},g);
       im.setAttribute('href',PORTRAIT);
