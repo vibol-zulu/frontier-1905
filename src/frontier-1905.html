@@ -905,8 +905,8 @@ DOMS.forEach(d=>{
       el('path',{class:'callout',d:`M0,0L${ex.toFixed(1)},${ey.toFixed(1)}L${(ex-22).toFixed(1)},${ey.toFixed(1)}`},g);
       el('circle',{class:'callout-dot life-dot',r:2.5},g);
       const tx=(ex-28).toFixed(1);
-      const t=el('text',{class:'dom-lbl','text-anchor':'end',x:tx,y:(ey+1).toFixed(1)},g);t.textContent=d.label||d.name;
-      const s=el('text',{class:'tier-tag','text-anchor':'end',x:tx,y:(ey+15).toFixed(1)},g);s.textContent=(d.tier[0].toUpperCase()+d.tier.slice(1));
+      const t=el('text',{class:'rim-lbl','text-anchor':'end',x:tx,y:(ey+5).toFixed(1)},g);t.textContent=d.label||d.name; // same size as the edge-of-knowledge label
+      const s=el('text',{class:'tier-tag','text-anchor':'end',x:tx,y:(ey+21).toFixed(1)},g);s.textContent=(d.tier[0].toUpperCase()+d.tier.slice(1));
       // portrait above the title, right edge aligned with the text
       const PW=80,PH=104,px=ex-28-PW,py=ey-15-PH-6;
       el('rect',{class:'portrait-frame',x:px-3,y:py-3,width:PW+6,height:PH+6,rx:2},g);
