@@ -27,14 +27,10 @@ for probe in ('id="cpop"', 'id="clock"', 'id="cOpen"', 'PASS_HASH'):
 
 # 2. fonts: embed if present
 fdir = os.path.join(ROOT, 'src', 'fonts')
-FACES = [  # family, file, weight, style
-    ('Libre Caslon Text', 'libre-caslon-text.woff2', '400 700', 'normal'),
-    ('Libre Caslon Text', 'libre-caslon-text-italic.woff2', '400 700', 'italic'),
-    ('IBM Plex Sans Condensed', 'plex-sans-condensed-400.woff2', '400', 'normal'),
-    ('IBM Plex Sans Condensed', 'plex-sans-condensed-500.woff2', '500', 'normal'),
-    ('IBM Plex Sans Condensed', 'plex-sans-condensed-600.woff2', '600', 'normal'),
+FACES = [  # family, file, weight, style (Lydian and Post Grotesk are already embedded in the source)
     ('IBM Plex Mono', 'plex-mono-400.woff2', '400', 'normal'),
     ('IBM Plex Mono', 'plex-mono-500.woff2', '500', 'normal'),
+    ('Libre Caslon Text', 'libre-caslon-text.woff2', '400 700', 'normal'),
 ]
 if all(os.path.exists(os.path.join(fdir, f)) for _, f, _, _ in FACES):
     css = ''.join(
