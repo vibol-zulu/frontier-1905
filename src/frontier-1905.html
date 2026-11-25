@@ -1531,5 +1531,86 @@ requestAnimationFrame(()=>{const r=stage.getBoundingClientRect();W=r.width;H=r.h
   cam=fitCam(FRAMES.overview);render();
   fromHash();
 });
+
+/* ---------- label arrangement from the square PNG: curved field labels, single Physics label, Special Relativity card, sheet numbering ---------- */
+(function(){
+  render();
+  const NS='http://www.w3.org/2000/svg', defs=svg.querySelector('defs');
+  const css=document.createElement('style');
+  css.textContent=`.node.sr .lbl,.node.sr .num{display:none!important}
+  .node.sr .dot{fill:#00564A!important;stroke:#00564A!important}
+  .phys-title text,#gLabels g .dom-sub{visibility:hidden!important}
+  .pl-curved{pointer-events:none}
+  .field,.wedge,.bump-line{stroke-opacity:.1!important}
+  .ring{stroke-opacity:.15!important}
+  .compact.pl-mid .edge-callout,.compact.pl-mid .life-callout,.compact.pl-mid .possible-callout{display:inline}
+  .compact.pl-mid #map .tier-tag{display:inline}
+  .compact.pl-mid #map .phys-title{display:inline}
+  .compact.pl-mid #map .dl-astro text,.compact.pl-mid #map .dl-math text{transform:none}`;
+  document.head.appendChild(css);
+  const ec=document.querySelector('.edge-callout');
+  const RR=(()=>{const m=ec.getAttribute('transform').match(/translate\(([-\d.]+) ([-\d.]+)\)/);return Math.hypot(+m[1],+m[2]);})();
+  const TOP=RR*1.11;
+  {const lab=document.querySelector('.life-callout .rim-lbl');if(lab)lab.textContent="Einstein's Lived Experience";}
+  {const lab=document.querySelector('.edge-callout .rim-lbl');if(lab)(lab.querySelector('tspan')||lab).textContent='Edge of Human Knowledge';}
+  {const lab=document.querySelector('.possible-callout .rim-lbl');if(lab)lab.textContent='Unknown Domains';}
+  const mkPath=id=>{const p=document.createElementNS(NS,'path');p.id=id;defs.appendChild(p);return p;};
+  const mkText=(id,cls)=>{const t=document.createElementNS(NS,'text');t.setAttribute('class',cls+' pl-curved');t.setAttribute('text-anchor','middle');
+    const tp=document.createElementNS(NS,'textPath');tp.setAttribute('href','#'+id);tp.setAttribute('startOffset','50%');t.appendChild(tp);gL.appendChild(t);return [t,tp];};
+  const arcD=(r,a0,a1,cw=true)=>{const P=t=>{const a=(t-90)*Math.PI/180;return `${(r*Math.cos(a)).toFixed(2)},${(r*Math.sin(a)).toFixed(2)}`};return `M${P(a0)} A${r},${r} 0 0 ${cw?1:0} ${P(a1)}`;};
+  // curved copies of every field label
+  const fields=[];let k=0;
+  [...gL.querySelectorAll('g text.dom-lbl, g text.tier-tag')].forEach(t=>{
+    if(t.closest('.life-callout,.edge-callout,.phys-title,.possible-callout'))return;
+    const id='plF'+(k++);const p=mkPath(id);const [n,tp]=mkText(id,t.getAttribute('class'));tp.textContent=t.textContent;
+    t.style.visibility='hidden';fields.push({t,p,n,g:t.closest('g')});});
+  // the single Physics label, Edge label
+  const physP=mkPath('plPhys'),primP=mkPath('plPrim');
+  const [physT,physTP]=mkText('plPhys','dom-lbl');physTP.textContent='Physics: Mechanics, Optics, Electromagnetism';
+  const [primT,primTP]=mkText('plPrim','tier-tag');primTP.textContent='Primary';
+  const subP=mkPath('plSub');const [subT,subTP]=mkText('plSub','tier-tag');subTP.textContent='Mechanics, Optics, Electromagnetism';
+  // Special Relativity card, built at unit scale and scaled with the labels
+  const card=document.createElementNS(NS,'g');card.setAttribute('class','pl-curved');gL.appendChild(card);
+  const mk=(size,str,fam)=>{const t=document.createElementNS(NS,'text');t.setAttribute('text-anchor','middle');t.style.fontSize=size+'px';t.style.fontFamily=fam;t.style.fill='#00564A';t.textContent=str;card.appendChild(t);return t;};
+  const d=mk(12.5,'30 June 1905','var(--f-mono)');d.setAttribute('y','-10');
+  const ti=mk(19,'Special Relativity','var(--f-display)');ti.setAttribute('y',(-10-12.5-7).toFixed(1));
+  const w=Math.max(ti.getComputedTextLength(),d.getComputedTextLength())+22,top2=+ti.getAttribute('y')-19-5;
+  const rc=document.createElementNS(NS,'rect');rc.setAttribute('x',(-w/2).toFixed(1));rc.setAttribute('y',top2.toFixed(1));rc.setAttribute('width',w.toFixed(1));rc.setAttribute('height',(-top2).toFixed(1));rc.setAttribute('rx','4');
+  rc.setAttribute('fill','#FCFBF2');rc.setAttribute('stroke','#00564A');rc.setAttribute('stroke-width','.75');card.insertBefore(rc,card.firstChild);
+  const beam=[0,1].map(()=>{const l=document.createElementNS(NS,'line');l.setAttribute('x1','0');l.setAttribute('x2','0');l.setAttribute('stroke','#00564A');l.setAttribute('stroke-linecap','round');l.setAttribute('class','pl-curved');gL.insertBefore(l,gL.firstChild);return l;});
+  const PHONE=()=>W<560;
+  function update(){
+    stage.classList.toggle('pl-mid',CM()&&!PHONE());
+    const u=LU();const inv=svg.getScreenCTM();if(!inv)return;const I=inv.inverse();
+    for(const f of fields){const {t,p,n,g}=f;const op=g.style.opacity,vis=g.style.visibility;n.style.opacity=op;n.style.visibility=vis;
+      const M=I.multiply(t.getScreenCTM());const pt=(x,y)=>{const q=svg.createSVGPoint();q.x=x;q.y=y;return q.matrixTransform(M);};
+      const x0=+(t.getAttribute('x')||0),y0=+(t.getAttribute('y')||0);const P=pt(x0,y0),Q=pt(x0+1,y0);
+      const sc=Math.hypot(Q.x-P.x,Q.y-P.y);const r=Math.hypot(P.x,P.y),a=Math.atan2(P.y,P.x);
+      const cw=(-Math.sin(a))*(Q.x-P.x)+Math.cos(a)*(Q.y-P.y)>0;const sp=0.6;
+      const A=s=>`${(r*Math.cos(s)).toFixed(2)},${(r*Math.sin(s)).toFixed(2)}`;
+      p.setAttribute('d',`M${A(cw?a-sp:a+sp)} A${r.toFixed(2)},${r.toFixed(2)} 0 0 ${cw?1:0} ${A(cw?a+sp:a-sp)}`);
+      const cs=getComputedStyle(t);n.style.fontSize=(parseFloat(cs.fontSize)*sc)+'px';n.style.strokeWidth=(parseFloat(cs.strokeWidth||0)*sc)+'px';}
+    const pg=document.querySelector('.phys-title');const op=pg?pg.style.opacity:'';const vis=pg?pg.style.visibility:'';
+    const cm=PHONE();let lblTop;
+    if(cm){physTP.textContent='Physics';subT.style.display='';
+      physP.setAttribute('d',arcD(TOP+40*u,-40,40));subP.setAttribute('d',arcD(TOP+26*u,-40,40));primP.setAttribute('d',arcD(TOP+14*u,-40,40));
+      physT.style.fontSize=(12.75*u)+'px';subT.style.fontSize=(9*u)+'px';primT.style.fontSize=(9*u)+'px';lblTop=TOP+40*u+12*u;}
+    else{physTP.textContent='Physics: Mechanics, Optics, Electromagnetism';subT.style.display='none';
+      physP.setAttribute('d',arcD(TOP+30*u,-40,40));primP.setAttribute('d',arcD(TOP+15*u,-40,40));
+      physT.style.fontSize=(12.75*u)+'px';primT.style.fontSize=(10*u)+'px';lblTop=TOP+42*u;}
+    [physT,primT,subT,card,...beam].forEach(e=>{e.style.opacity=op;e.style.visibility=vis;});
+    const base=lblTop+14*u;card.setAttribute('transform',`translate(0 ${(-base).toFixed(1)}) scale(${u})`);
+    beam.forEach(l=>l.setAttribute('stroke-width',(1.5*u).toFixed(2)));
+    beam[0].setAttribute('y1',(-(TOP+6*u)).toFixed(1));beam[0].setAttribute('y2',(-(TOP+11*u)).toFixed(1));
+    beam[1].setAttribute('y1',(-lblTop).toFixed(1));beam[1].setAttribute('y2',(-base).toFixed(1));
+  }
+  // numbers below the circles; in the Direct view they follow the sheet's 1 to 22
+  const NUMS={"9":1,"10":2,"12":3,"14":4,"17":5,"18":6,"24":7,"26":8,"27":9,"28":10,"31":11,"33":12,"34":13,"36":14,"40":15,"41":16,"42":17,"43":18,"44":19,"45":20,"46":21,"47":22};
+  document.querySelectorAll('.node .num').forEach(t=>{t.dataset.orig=t.textContent;t.setAttribute('x','0');t.setAttribute('y','17');t.setAttribute('text-anchor','middle');});
+  function renumber(){document.querySelectorAll('.node .num').forEach(t=>{const o=t.dataset.orig;t.textContent=(view==='direct'&&NUMS[o])?NUMS[o]:o;});}
+  const _applyView=applyView;applyView=function(v){_applyView(v);renumber();};renumber();
+  const _render=render;render=function(){_render();update();};
+  render();
+})();
 })();
 </script>
