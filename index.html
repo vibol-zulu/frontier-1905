@@ -33,6 +33,7 @@
 /*END BRANDFONTS*/
 
 /* Layout: a full-bleed "circle of knowledge" stage, radius = time, wedges = fields; a reading panel beside it. Deep green ink on warm paper; pink for what an idea drew on, sky blue for what it led to. */
+#cOpen{display:none!important} /* colour editor button hidden */
 :root{
   /* locked palette: one light look, chosen by the author */
   --bg:#FFFFFA; --disk:#FCFBF2; --panel:#FCFBF2; --field:#FCFBF2;
@@ -651,7 +652,7 @@ const NODES=[
   idea:"Trying to measure the distance to the stars, James Bradley found that the star Gamma Draconis shifted back and forth by about 40 arcseconds over a year. He explained it as Earth's orbital motion combining with the finite speed of light, like rain seeming to slant when you walk through it.",
   gave:'A precise measurement of light seen from a moving Earth. Einstein derived aberration in section 7 of the 1905 paper and later named it, with Fizeau\'s experiment, as the evidence that weighed most with him.'},
  {id:'hume',year:1739,when:'1739',who:'David Hume',t:"Concepts from experience",title:'A Treatise of Human Nature',d:'phil',th:-38,
-  idea:"In A Treatise of Human Nature, David Hume argued that every idea must trace back to an impression from experience. Applying this test, he found that causation could not be observed directly: we only ever see one event follow another. Ideas that fail the test should be questioned, however familiar they seem.",
+  idea:"In A Treatise of Human Nature, David Hume argued that every simple idea must trace back to an impression from experience. Applying this test, he found that causation could not be observed directly: we only ever see one event follow another. Ideas that fail the test should be questioned, however familiar they seem.",
   gave:'Einstein said that reading Hume helped him see that simultaneity needed the same scrutiny.'},
  {id:'harrison',year:1761,when:'1761',who:'John Harrison',t:'Marine chronometer',title:'Marine chronometer H4',d:'tech',th:45,
   idea:"John Harrison's H4, a large pocket watch, kept accurate time at sea. On a 1761–62 voyage to Jamaica it lost only about five seconds in 81 days. By carrying home-port time on board and comparing it with local noon, navigators could work out their longitude.",
@@ -660,7 +661,7 @@ const NODES=[
   idea:"In the Critique of Pure Reason, Immanuel Kant argued that space and time are not features we discover in the world. They are forms the mind brings to all experience. As a result, the truths of Euclidean geometry and of a single, uniform time could be known with certainty before any observation.",
   gave:'A view so confident it became a target. Einstein read Kant as a teenager; Mach and Poincaré argued against it.'},
  {id:'young',year:1801,when:'1801–03',who:'Thomas Young',t:"Double-slit interference",title:'Interference of light',d:'optics',th:3,
-  idea:"Thomas Young split a narrow beam of sunlight with the edge of a thin card, and described doing the same with two small slits, and saw alternating bright and dark bands. Where waves from the two paths arrived in step they reinforced each other, and where they arrived out of step they cancelled out. A stream of particles could not produce dark bands, so the result was strong evidence that light is a wave.",
+  idea:"Thomas Young split a narrow beam of sunlight with the edge of a thin card, and later described doing the same with two small slits, and saw alternating bright and dark bands. Where waves from the two paths arrived in step they reinforced each other, and where they arrived out of step they cancelled out. A stream of particles could not produce dark bands, so the result was strong evidence that light is a wave.",
   gave:'Firm evidence that light is a wave, sharpening the question of what it waves in.'},
  {id:'fresnel',year:1818,when:'1818',who:'Augustin-Jean Fresnel',t:"Partial aether drag",title:'Partial aether drag',d:'optics',th:-4,
   idea:"Augustin-Jean Fresnel built a full mathematical wave theory of light. To explain why Earth's motion seemed to make no difference to optical experiments, he proposed that a moving transparent body such as glass or water drags the aether inside it only partly along, by an amount set by how strongly it bends light.",
@@ -686,14 +687,14 @@ const NODES=[
  {id:'calculus',year:1670,when:'1665–1684',who:'Isaac Newton and Gottfried Leibniz',t:'Calculus',title:'The calculus',d:'math',th:31.5,
   idea:"Working separately, Newton and Leibniz developed calculus, the mathematics of continuous change. Derivatives measure how fast a quantity changes at an instant, and integrals add up infinitely many small pieces. Leibniz published first, in 1684. Calculus also gave the standard modern answer to Zeno: infinitely many steps can add up to a finite distance.",
   gave:'The language of physics. Newton\'s mechanics and Maxwell\'s equations are written in it, and Einstein derives the Lorentz transformation in 1905 with partial derivatives.'},
- {id:'thermo',year:1850,when:'1850s',who:'Rudolf Clausius and William Thomson',t:'Thermodynamics',title:'The laws of thermodynamics',d:'mech',th:-19.5,
-  idea:"Clausius and Thomson set out the laws of thermodynamics: energy is never created or destroyed, and heat flows on its own only from hot to cold. The laws held whatever heat actually was and however atoms behaved, so physicists could reason from them without knowing the mechanism underneath.",
+ {id:'thermo',year:1850,when:"1850–51",who:'Rudolf Clausius and William Thomson',t:'Thermodynamics',title:'The laws of thermodynamics',d:'mech',th:-19.5,
+  idea:"Building on the work of Carnot, Mayer, Joule and Helmholtz, Clausius and Thomson stated the laws of thermodynamics: energy is never created or destroyed, and heat flows on its own only from hot to cold. The laws held whatever heat actually was and however atoms behaved, so physicists could reason from them without knowing the mechanism underneath.",
   gave:'A model for the kind of theory Einstein wanted. He called relativity a principle theory like thermodynamics: start from a few general laws everyone accepts, then work out what must follow.'},
  {id:'bernstein',year:1891,when:'c. 1891',who:'Aaron Bernstein, read by Einstein aged about 12',t:"Bernstein's science books",title:'Popular Books on Natural Science',d:'life',th:-53,
   idea:"Aaron Bernstein's Popular Books on Natural Science explained science to general readers through vivid imagined scenes. In one, the reader travels along a telegraph wire with an electrical signal. Einstein read the series at about 12 and later said he read it with breathless attention.",
   gave:'An early taste for picturing physics from the inside, and possibly the seed of chasing a light beam.'},
  {id:'vectors',year:1885,when:'1884–85',who:'Oliver Heaviside and Josiah Willard Gibbs',t:"Maxwell in vector form",title:'Vector analysis',d:'math',th:27.5,
-  idea:"Maxwell first wrote his theory as twenty equations in twenty variables. Gibbs and Heaviside developed vector notation, which bundles the three directions of space into a single quantity. Heaviside used it to rewrite the theory as four compact equations, the form still taught today. Hertz reached the same form independently in 1890.",
+  idea:"Maxwell first wrote his theory as twenty equations in twenty variables. Gibbs and Heaviside developed vector notation, which bundles the three directions of space into a single quantity. Heaviside used it to rewrite the theory as four compact equations, the form still taught today. Hertz reached the same four equations independently in 1890, written in components rather than vectors.",
   gave:'The compact four-equation form of Maxwell\'s theory. Einstein writes it out in components and calls it the Maxwell-Hertz equations, after Hertz\'s version.'},
  {id:'riemann',year:1854,when:'1854',who:'Bernhard Riemann',t:"Curved space",title:'On the Hypotheses which lie at the Foundations of Geometry',d:'math',th:26,
   idea:"In a lecture at Göttingen, Bernhard Riemann extended geometry to spaces of any number of dimensions that can curve differently from place to place. He argued that whether real space is flat or curved cannot be settled by reason alone. It is a question for measurement.",
@@ -705,7 +706,7 @@ const NODES=[
   idea:"Wilhelm Weber and Rudolf Kohlrausch measured the same electric charge in two ways: by the force it exerts when it sits still, and by the magnetic effect it produces when it flows as a current. The ratio between the two units is a speed. In the units Maxwell later used, their result came to about 310,000 km per second.",
   gave:"The first number Maxwell set beside the speed his equations predicted for electromagnetic waves. It was so close to the measured speed of light that he concluded light itself is an electromagnetic wave."},
  {id:'maxwell',year:1865,when:'1865',who:'James Clerk Maxwell',t:"Maxwell's equations",title:'A Dynamical Theory of the Electromagnetic Field',d:'em',th:12,
-  idea:"James Clerk Maxwell combined the laws of electricity and magnetism into one set of equations. They predicted waves of electric and magnetic field travelling at about 300,000 km per second, which matched the measured speed of light. He concluded that light itself is an electromagnetic wave.",
+  idea:"James Clerk Maxwell combined the laws of electricity and magnetism into one set of equations. They predicted waves of electric and magnetic field travelling at about 300,000 km per second, which matched the measured speed of light. He had first proposed in 1862 that light is an electromagnetic wave; the 1865 paper set that conclusion on a complete field theory.",
   gave:'The speed c written into a law of nature. If Maxwell\'s laws hold for every observer, as Galileo\'s principle demands, then light has that speed for everyone. That became the second postulate.'},
  {id:'standardTime',year:1883,when:'1883–84',who:'Railways and the Meridian Conference',t:"Standard time zones",title:'Standard time zones',d:'tech',th:46,
   idea:"Until 1883, towns kept their own local time set by the Sun, so noon in Boston and noon in New York were minutes apart. That year North American railways replaced dozens of local times with a handful of time zones, and in 1884 the International Meridian Conference fixed Greenwich as the starting line for longitude worldwide.",
@@ -716,8 +717,8 @@ const NODES=[
  {id:'michelson',year:1887,when:'1887',who:'Albert Michelson and Edward Morley',t:"Michelson–Morley null result",title:'The aether-drift experiment',d:'optics',th:-2,
   idea:"Michelson and Morley split a beam of light into two paths at right angles, bounced each off a mirror and recombined them. If Earth were moving through the aether, the beam heading into the aether wind should take longer, shifting the pattern of bright and dark bands as the apparatus turned. The expected shift never appeared.",
   gave:'A null result physicists struggled to explain. How much it shaped Einstein directly is debated; he gave differing accounts, so no direct link is drawn.'},
- {id:'hertz',year:1888,when:'1887–88',who:'Heinrich Hertz',t:'Radio waves',title:'Electromagnetic waves',d:'em',th:20.5,
-  idea:"Heinrich Hertz built a spark transmitter and a separate receiving loop, and detected invisible electromagnetic waves crossing his laboratory. He showed they reflect, refract and travel at the speed of light, just as Maxwell's theory predicted.",
+ {id:'hertz',year:1888,when:"1887–90",who:'Heinrich Hertz',t:'Radio waves',title:"Electromagnetic waves; The Fundamental Equations of Electrodynamics",d:'em',th:20.5,
+  idea:"Heinrich Hertz built a spark transmitter and a separate receiving loop, and detected invisible electromagnetic waves crossing his laboratory. He showed they reflect, refract and travel at the speed of light, just as Maxwell's theory predicted. In 1890 he restated Maxwell's theory as a clean set of field equations, the version Einstein calls the Maxwell-Hertz equations.",
   gave:'Made Maxwell\'s theory the settled physics of light, so any new theory had to keep it intact.'},
  {id:'contraction',year:1889,when:'1889–92',who:'George FitzGerald and Hendrik Lorentz',t:'Length contraction',title:'The contraction hypothesis',d:'em',th:14.5,side:'L',
   idea:"FitzGerald, and Lorentz independently, proposed that an object moving through the aether becomes slightly shorter along its direction of motion. At Earth's orbital speed the shrinking is about one part in 200 million, exactly enough to hide the aether wind from Michelson and Morley.",
@@ -728,19 +729,19 @@ const NODES=[
  {id:'foppl',year:1894,when:'1894',who:'August Föppl',t:"Magnet and conductor",title:"Introduction to Maxwell's Theory of Electricity",d:'em',th:17,
   idea:"August Föppl's Introduction to Maxwell's Theory of Electricity was a standard German textbook of the 1890s. It discussed whether the current produced when a magnet and a conductor move past each other depends on which one is really moving, or only on their relative motion.",
   gave:'Gerald Holton argues Einstein studied it, and its framing echoes the opening of the 1905 paper.'},
- {id:'radpressure',year:1900.8,when:'1873–1901',who:'James Clerk Maxwell; Pyotr Lebedev; Ernest Nichols and Gordon Hull',t:'Radiation pressure',title:'The pressure of light',d:'optics',th:1.5,
-  idea:"Maxwell's theory predicted that light pushes on whatever it strikes. The push is tiny: full sunlight presses on a square metre with a force of a few millionths of a newton. It was finally measured in 1900–01 by Pyotr Lebedev in Moscow and, separately, by Ernest Nichols and Gordon Hull in the United States, using delicate balances in near vacuum.",
+ {id:'radpressure',year:1900.8,when:"1900–03",who:"Pyotr Lebedev; Ernest Nichols and Gordon Hull (predicted by James Clerk Maxwell)",t:'Radiation pressure',title:'The pressure of light',d:'optics',th:1.5,
+  idea:"Maxwell's theory of 1873 predicted that light pushes on whatever it strikes. The push is tiny: full sunlight presses on a square metre with a force of a few millionths of a newton. It was first measured in 1900–01 by Pyotr Lebedev in Moscow and, separately, by Ernest Nichols and Gordon Hull in the United States, who published their definitive result in 1903.",
   gave:"Section 8 of the 1905 paper works out the pressure of light on a moving mirror. Light that pushes carries momentum, which made radiation part of mechanics."},
  {id:'lorentz',year:1895,when:'1895–1904',who:'Hendrik Lorentz',t:'Lorentz transformations',title:'Local time and the Lorentz transformation',d:'em',th:10.5,side:'L',
-  idea:"Hendrik Lorentz built a theory of electrons moving through a stationary aether. To keep Maxwell's equations working for moving observers he introduced local time, a mathematical adjustment to the time coordinate, and by 1904 he had the coordinate equations now named after him, linking measurements in moving and stationary frames. Poincaré corrected the rest and gave them that name in 1905.",
+  idea:"Hendrik Lorentz built a theory of electrons moving through a stationary aether. To keep Maxwell's equations working for moving observers he introduced local time, a mathematical adjustment to the time coordinate, and by 1904 he had the coordinate equations now named after him, linking measurements in moving and stationary frames. In 1905 Poincaré corrected his equations for charge density and velocity, and gave the transformations Lorentz's name.",
   gave:'Einstein knew the 1895 work. He derived the same transformations from two postulates and treated local time as simply time.'},
  {id:'lightbeam',year:1895,when:'1895–96',who:'Albert Einstein, age 16',t:'Chasing light',title:'Riding alongside a light beam',d:'life',th:-56.5,
   idea:"At school in Aarau, the 16-year-old Einstein imagined riding alongside a beam of light at its own speed. He would see a frozen electromagnetic wave, standing still in space. Maxwell's equations allow no such thing, and nothing like it had ever been observed. The puzzle stayed with him for ten years.",
   gave:'The paradox he carried for ten years. Its answer is that nobody can catch up with light.'},
- {id:'poincare',year:1898,when:'1898–1902',who:'Henri Poincaré',t:'Simultaneity by signal',title:'The Measure of Time',d:'phil',th:-38,
-  idea:"In The Measure of Time and Science and Hypothesis, Henri Poincaré argued that calling two distant events simultaneous is a convention, not something we observe. In practice, he noted, telegraph operators synchronise clocks by exchanging signals and correcting for the time each signal takes to travel.",
+ {id:'poincare',year:1898,when:'1898–1902',who:'Henri Poincaré',t:'Simultaneity by signal',title:"The Measure of Time; Science and Hypothesis",d:'phil',th:-38,
+  idea:"In The Measure of Time and Science and Hypothesis, Henri Poincaré argued that calling two distant events simultaneous is a convention, not something we observe. In practice, he noted, astronomers synchronise clocks by telegraph, exchanging signals and allowing for the time each takes to travel. In 1900 he described the same procedure with light signals between moving observers.",
   gave:'Close to the clock-synchronisation procedure in section 1 of the 1905 paper.'},
- {id:'patent',year:1902,when:'1902–09',who:'Albert Einstein',t:"Patent office work",title:'Technical Expert, Third Class, Bern',d:'life',th:-58.5,
+ {id:'patent',year:1902,when:"1902–05",who:'Albert Einstein',t:"Patent office work",title:'Technical Expert, Third Class, Bern',d:'life',th:-58.5,
   idea:"From June 1902, Einstein worked as a technical expert at the Swiss Patent Office in Bern. His job was to read applications, many of them for electrical devices, and judge whether each invention would really work as its inventor claimed.",
   gave:'Daily practice in judging how real machines work. Galison argues the work included patents for synchronising clocks.'},
  {id:'olympia',year:1902.1,when:'1902–04',who:'Einstein, Maurice Solovine and Conrad Habicht',t:'Olympia Academy',title:'The Olympia Academy',d:'life',th:-51,
@@ -756,7 +757,7 @@ const NODES=[
   idea:"Shining ultraviolet light on a metal plate in a vacuum, Philipp Lenard measured the electrons knocked out. Brighter light freed more electrons, but not faster ones: their energy did not depend on brightness at all, which the wave theory of light could not explain.",
   gave:"The puzzling data that Einstein's light quanta explained."},
  {id:'photo',year:1905.2,when:'March 1905',who:"Albert Einstein",t:"Light quanta",title:"On a Heuristic Point of View Concerning the Production and Transformation of Light",d:'frontier',th:-16,r:1.0349,side:'L',
-  idea:"Three months before relativity, Einstein proposed that light itself travels as separate packets of energy, each worth Planck's constant times its frequency. One packet frees one electron, so the electron's energy depends on the light's colour, not its brightness. It was the work cited for his 1921 Nobel Prize.",
+  idea:"Three months before relativity, Einstein proposed that light itself travels as separate packets of energy, each worth Planck's constant times its frequency. One packet frees one electron, so the electron's energy depends on the light's colour, not its brightness. His 1921 Nobel Prize cited the law of the photoelectric effect that this paper predicted.",
   gave:"Einstein's other great step of 1905, and the start of quantum theory: light behaves as both wave and particle."},
  {id:'sr',year:1905.5,when:'30 June 1905',who:'Albert Einstein',t:'Special relativity',title:'On the Electrodynamics of Moving Bodies',d:'frontier',th:0,r:1.11,side:'L',
   idea:'Two postulates. The laws of physics are the same in every uniformly moving frame, and light moves at the same speed c for every observer. From these, simultaneity becomes relative, moving clocks run slow and moving rods contract.',
@@ -1471,6 +1472,87 @@ requestAnimationFrame(()=>{const r=stage.getBoundingClientRect();W=r.width;H=r.h
   cam=fitCam(FRAMES.overview);render();
   fromHash();
 });
+
+/* ---------- label arrangement from the square PNG: curved field labels, single Physics label, Special Relativity card, sheet numbering ---------- */
+(function(){
+  render();
+  const NS='http://www.w3.org/2000/svg', defs=svg.querySelector('defs');
+  const css=document.createElement('style');
+  css.textContent=`.node.sr .lbl,.node.sr .num{display:none!important}
+  .node.sr .dot{fill:#00564A!important;stroke:#00564A!important}
+  .phys-title text,#gLabels g .dom-sub{visibility:hidden!important}
+  .pl-curved{pointer-events:none}
+  .field,.wedge,.bump-line{stroke-opacity:.1!important}
+  .ring{stroke-opacity:.15!important}
+  .compact.pl-mid .edge-callout,.compact.pl-mid .life-callout,.compact.pl-mid .possible-callout{display:inline}
+  .compact.pl-mid #map .tier-tag{display:inline}
+  .compact.pl-mid #map .phys-title{display:inline}
+  .compact.pl-mid #map .dl-astro text,.compact.pl-mid #map .dl-math text{transform:none}`;
+  document.head.appendChild(css);
+  const ec=document.querySelector('.edge-callout');
+  const RR=(()=>{const m=ec.getAttribute('transform').match(/translate\(([-\d.]+) ([-\d.]+)\)/);return Math.hypot(+m[1],+m[2]);})();
+  const TOP=RR*1.11;
+  {const lab=document.querySelector('.life-callout .rim-lbl');if(lab)lab.textContent="Einstein's Lived Experience";}
+  {const lab=document.querySelector('.edge-callout .rim-lbl');if(lab)(lab.querySelector('tspan')||lab).textContent='Edge of Human Knowledge';}
+  {const lab=document.querySelector('.possible-callout .rim-lbl');if(lab)lab.textContent='Unknown Domains';}
+  const mkPath=id=>{const p=document.createElementNS(NS,'path');p.id=id;defs.appendChild(p);return p;};
+  const mkText=(id,cls)=>{const t=document.createElementNS(NS,'text');t.setAttribute('class',cls+' pl-curved');t.setAttribute('text-anchor','middle');
+    const tp=document.createElementNS(NS,'textPath');tp.setAttribute('href','#'+id);tp.setAttribute('startOffset','50%');t.appendChild(tp);gL.appendChild(t);return [t,tp];};
+  const arcD=(r,a0,a1,cw=true)=>{const P=t=>{const a=(t-90)*Math.PI/180;return `${(r*Math.cos(a)).toFixed(2)},${(r*Math.sin(a)).toFixed(2)}`};return `M${P(a0)} A${r},${r} 0 0 ${cw?1:0} ${P(a1)}`;};
+  // curved copies of every field label
+  const fields=[];let k=0;
+  [...gL.querySelectorAll('g text.dom-lbl, g text.tier-tag')].forEach(t=>{
+    if(t.closest('.life-callout,.edge-callout,.phys-title,.possible-callout'))return;
+    const id='plF'+(k++);const p=mkPath(id);const [n,tp]=mkText(id,t.getAttribute('class'));tp.textContent=t.textContent;
+    t.style.visibility='hidden';fields.push({t,p,n,g:t.closest('g')});});
+  // the single Physics label, Edge label
+  const physP=mkPath('plPhys'),primP=mkPath('plPrim');
+  const [physT,physTP]=mkText('plPhys','dom-lbl');physTP.textContent='Physics: Mechanics, Optics, Electromagnetism';
+  const [primT,primTP]=mkText('plPrim','tier-tag');primTP.textContent='Primary';
+  const subP=mkPath('plSub');const [subT,subTP]=mkText('plSub','tier-tag');subTP.textContent='Mechanics, Optics, Electromagnetism';
+  // Special Relativity card, built at unit scale and scaled with the labels
+  const card=document.createElementNS(NS,'g');card.setAttribute('class','pl-curved');gL.appendChild(card);
+  const mk=(size,str,fam)=>{const t=document.createElementNS(NS,'text');t.setAttribute('text-anchor','middle');t.style.fontSize=size+'px';t.style.fontFamily=fam;t.style.fill='#00564A';t.textContent=str;card.appendChild(t);return t;};
+  const d=mk(12.5,'30 June 1905','var(--f-mono)');d.setAttribute('y','-10');
+  const ti=mk(19,'Special Relativity','var(--f-display)');ti.setAttribute('y',(-10-12.5-7).toFixed(1));
+  const w=Math.max(ti.getComputedTextLength(),d.getComputedTextLength())+22,top2=+ti.getAttribute('y')-19-5;
+  const rc=document.createElementNS(NS,'rect');rc.setAttribute('x',(-w/2).toFixed(1));rc.setAttribute('y',top2.toFixed(1));rc.setAttribute('width',w.toFixed(1));rc.setAttribute('height',(-top2).toFixed(1));rc.setAttribute('rx','4');
+  rc.setAttribute('fill','#FCFBF2');rc.setAttribute('stroke','#00564A');rc.setAttribute('stroke-width','.75');card.insertBefore(rc,card.firstChild);
+  const beam=[0,1].map(()=>{const l=document.createElementNS(NS,'line');l.setAttribute('x1','0');l.setAttribute('x2','0');l.setAttribute('stroke','#00564A');l.setAttribute('stroke-linecap','round');l.setAttribute('class','pl-curved');gL.insertBefore(l,gL.firstChild);return l;});
+  const PHONE=()=>W<560;
+  function update(){
+    stage.classList.toggle('pl-mid',CM()&&!PHONE());
+    const u=LU();const inv=svg.getScreenCTM();if(!inv)return;const I=inv.inverse();
+    for(const f of fields){const {t,p,n,g}=f;const op=g.style.opacity,vis=g.style.visibility;n.style.opacity=op;n.style.visibility=vis;
+      const M=I.multiply(t.getScreenCTM());const pt=(x,y)=>{const q=svg.createSVGPoint();q.x=x;q.y=y;return q.matrixTransform(M);};
+      const x0=+(t.getAttribute('x')||0),y0=+(t.getAttribute('y')||0);const P=pt(x0,y0),Q=pt(x0+1,y0);
+      const sc=Math.hypot(Q.x-P.x,Q.y-P.y);const r=Math.hypot(P.x,P.y),a=Math.atan2(P.y,P.x);
+      const cw=(-Math.sin(a))*(Q.x-P.x)+Math.cos(a)*(Q.y-P.y)>0;const sp=0.6;
+      const A=s=>`${(r*Math.cos(s)).toFixed(2)},${(r*Math.sin(s)).toFixed(2)}`;
+      p.setAttribute('d',`M${A(cw?a-sp:a+sp)} A${r.toFixed(2)},${r.toFixed(2)} 0 0 ${cw?1:0} ${A(cw?a+sp:a-sp)}`);
+      const cs=getComputedStyle(t);n.style.fontSize=(parseFloat(cs.fontSize)*sc)+'px';n.style.strokeWidth=(parseFloat(cs.strokeWidth||0)*sc)+'px';}
+    const pg=document.querySelector('.phys-title');const op=pg?pg.style.opacity:'';const vis=pg?pg.style.visibility:'';
+    const cm=PHONE();let lblTop;
+    if(cm){physTP.textContent='Physics';subT.style.display='';
+      physP.setAttribute('d',arcD(TOP+40*u,-40,40));subP.setAttribute('d',arcD(TOP+26*u,-40,40));primP.setAttribute('d',arcD(TOP+14*u,-40,40));
+      physT.style.fontSize=(12.75*u)+'px';subT.style.fontSize=(9*u)+'px';primT.style.fontSize=(9*u)+'px';lblTop=TOP+40*u+12*u;}
+    else{physTP.textContent='Physics: Mechanics, Optics, Electromagnetism';subT.style.display='none';
+      physP.setAttribute('d',arcD(TOP+30*u,-40,40));primP.setAttribute('d',arcD(TOP+15*u,-40,40));
+      physT.style.fontSize=(12.75*u)+'px';primT.style.fontSize=(10*u)+'px';lblTop=TOP+42*u;}
+    [physT,primT,subT,card,...beam].forEach(e=>{e.style.opacity=op;e.style.visibility=vis;});
+    const base=lblTop+14*u;card.setAttribute('transform',`translate(0 ${(-base).toFixed(1)}) scale(${u})`);
+    beam.forEach(l=>l.setAttribute('stroke-width',(1.5*u).toFixed(2)));
+    beam[0].setAttribute('y1',(-(TOP+6*u)).toFixed(1));beam[0].setAttribute('y2',(-(TOP+11*u)).toFixed(1));
+    beam[1].setAttribute('y1',(-lblTop).toFixed(1));beam[1].setAttribute('y2',(-base).toFixed(1));
+  }
+  // numbers below the circles; in the Direct view they follow the sheet's 1 to 22
+  const NUMS={"9":1,"10":2,"12":3,"14":4,"17":5,"18":6,"24":7,"26":8,"27":9,"28":10,"31":11,"33":12,"34":13,"36":14,"40":15,"41":16,"42":17,"43":18,"44":19,"45":20,"46":21,"47":22};
+  document.querySelectorAll('.node .num').forEach(t=>{t.dataset.orig=t.textContent;t.setAttribute('x','0');t.setAttribute('y','17');t.setAttribute('text-anchor','middle');});
+  function renumber(){document.querySelectorAll('.node .num').forEach(t=>{const o=t.dataset.orig;t.textContent=(view==='direct'&&NUMS[o])?NUMS[o]:o;});}
+  const _applyView=applyView;applyView=function(v){_applyView(v);renumber();};renumber();
+  const _render=render;render=function(){_render();update();};
+  render();
+})();
 })();
 </script>
 
