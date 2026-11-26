@@ -1550,6 +1550,21 @@ requestAnimationFrame(()=>{const r=stage.getBoundingClientRect();W=r.width;H=r.h
   document.querySelectorAll('.node .num').forEach(t=>{t.dataset.orig=t.textContent;t.setAttribute('x','0');t.setAttribute('y','17');t.setAttribute('text-anchor','middle');});
   function renumber(){document.querySelectorAll('.node .num').forEach(t=>{const o=t.dataset.orig;t.textContent=(view==='direct'&&NUMS[o])?NUMS[o]:o;});}
   const _applyView=applyView;applyView=function(v){_applyView(v);renumber();};renumber();
+  // at medium widths the compact layout keeps the call-outs, so the overview zooms out until every label fits
+  function fitMid(c){
+    stage.classList.add('pl-mid');const ins=insets(),m=14,k=.78;
+    const items=scaled.filter(s=>s.g.isConnected&&!s.g.classList.contains('filt')&&getComputedStyle(s.g).display!=='none').map(s=>{
+      let b;try{b=s.g.getBBox();}catch(e){return null;}if(!b.width&&!b.height)return null;
+      const r=(s.rot||0)*Math.PI/180,cs=Math.cos(r),sn=Math.sin(r);
+      const pts=[[b.x,b.y],[b.x+b.width,b.y],[b.x,b.y+b.height],[b.x+b.width,b.y+b.height]].map(([px,py])=>[px*cs-py*sn,px*sn+py*cs]);
+      return {x:s.x,y:s.y,x0:Math.min(...pts.map(p=>p[0])),x1:Math.max(...pts.map(p=>p[0])),y0:Math.min(...pts.map(p=>p[1])),y1:Math.max(...pts.map(p=>p[1]))};}).filter(Boolean);
+    {const cb=card.getBBox();items.push({x:0,y:-TOP,x0:cb.x,x1:cb.x+cb.width,y0:-56+cb.y,y1:-56+cb.y+cb.height});}
+    for(let u=c.u;u<c.u*2.5;u*=1.02){
+      const A=Math.min(...items.map(i=>i.x/u+k*i.x0))+W/2-m,B=Math.max(...items.map(i=>i.x/u+k*i.x1))-W/2+m;
+      const Ay=Math.min(...items.map(i=>i.y/u+k*i.y0))+H/2-ins.t,By=Math.max(...items.map(i=>i.y/u+k*i.y1))-H/2+ins.b;
+      if(B<=A&&By<=Ay)return {x:(A+B)/2*u,y:(Ay+By)/2*u,u};}
+    return c;}
+  const _fitCam=fitCam;fitCam=function(f){const c=_fitCam(f);return (CM()&&!PHONE()&&JSON.stringify(f)===JSON.stringify(FRAMES.overview))?fitMid(c):c;};
   const _render=render;render=function(){_render();update();};
   render();
 })();
